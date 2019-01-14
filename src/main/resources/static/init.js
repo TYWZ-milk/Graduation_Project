@@ -40,9 +40,14 @@ function init() {
     Trackcontrols.lookSpeed = 0.1;
     Trackcontrols.lookVertical = true;
 
+    //THREE.Cache.clear();
+
     initStats();
     initGui();
     initScene();
+    initObject();
+    newtreecircle(message);
+    console.log(message);
     //smallMap();
     animate();
 }

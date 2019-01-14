@@ -1,12 +1,17 @@
 package graduation.project.demo.Controller;
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.Block;
+import com.mongodb.DBCursor;
 import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
 import com.sun.source.tree.Tree;
 import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -16,6 +21,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpSession;
+import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,20 +34,23 @@ import java.util.List;
 @Controller
 public class MainController {
     @RequestMapping(value = "/main",method = RequestMethod.GET)
-    public String Main(Model model){
-        List<Document> documents = new ArrayList<>();
+    public String Main(Model model, HttpSession session){
+        List<Object> documents = new ArrayList<>();
+        String timeid = (String) session.getAttribute("timeid");
         try {
             // 连接到 mongodb 服务
             MongoClient mongoClient = new MongoClient("localhost", 27017);
             // 连接到数据库
             MongoDatabase mongoDatabase = mongoClient.getDatabase("Trees");
             MongoCollection<Document> collection = mongoDatabase.getCollection("trees");
-            FindIterable<Document> findIterable = collection.find();
-            MongoCursor<Document> mongoCursor = findIterable.iterator();
+            Bson filter = Filters.eq("treeID", timeid);
+            FindIterable findIterable = collection.find(filter);
+            MongoCursor cursor = findIterable.iterator();
             int i = 0;
-            while (mongoCursor.hasNext()) {
+
+            while (cursor.hasNext()) {
+                documents.add(cursor.next());
                 i++;
-                documents.add(mongoCursor.next());
             }
             System.out.println("i=" + i);
         }catch (Exception e) {

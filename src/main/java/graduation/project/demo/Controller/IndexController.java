@@ -8,9 +8,14 @@ import org.bson.Document;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -44,13 +49,16 @@ public class IndexController {
     }
 
     @RequestMapping(value = "/blending", method = RequestMethod.POST)
-    public String blend(@RequestBody String number) {
+    public String blend(@RequestBody String number, HttpSession session) {
         tree1 = (List<Object>) trees.get(0);
         tree2 = (List<Object>) trees.get(1);
         reusableSet();
         addZero(tree1,tree2);
         int forestSize = Integer.parseInt(number);
         long startTime=System.currentTimeMillis();
+        Date now = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");//可以方便地修改日期格式
+        String time = dateFormat.format( now );
         for(int total= 0;total<forestSize;total++) {
             tree = new ArrayList<>();
             ArrayList<Object>temp = new ArrayList<>(blendtree);
@@ -63,8 +71,9 @@ public class IndexController {
                 blending(temp, ptree2);
             compact();
             System.out.format("第%d棵树木生成完成\n",total+1);
-            save("AL06a","BS07a");
+            save(time);
         }
+        session.setAttribute("timeid",time);
         toMongo();
         long endTime=System.currentTimeMillis(); //获取结束时间
         System.out.println("程序运行时间： "+(endTime-startTime)+"ms");
@@ -433,7 +442,7 @@ public class IndexController {
 
     }
 
-    private static void save(String case1, String case2){
+    private static void save(String time){
         StringBuilder content = new StringBuilder();
         for (Object aBlendtree : blendtree) {
             for (int j = 0; j < ((ArrayList) aBlendtree).size(); j++) {
@@ -448,7 +457,7 @@ public class IndexController {
                 }
             }
         }
-        Document document = new Document("treeID",case1+"_"+case2).
+        Document document = new Document("treeID",time).
                 append("treeData", content.toString());
         documents.add(document);
     }
