@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+    <script th:src="@{/lib/jquery-1.11.3.min.js}"></script>
+</head>
+<body>
+<div>
+    上传文件 ： <input type="file" name="file" multiple id="fileId" />
+    <button type="submit" name="btn" value="上传" id="btnId" onclick="upload()">上传</button>
+    <input type="text" placeholder="请输入森林规模" id="num"
+           onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
+           onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"/>
+    <button type="submit" name="btn" value="计算" id="number" onclick="blending()">计算</button>
+    <a th:href="@{/main}">
+        <button>森林浏览</button>
+    </a>
+</div>
+<script type="text/javascript">
+    function upload() {
+        var objFile = document.getElementById("fileId");
+        if(objFile.value == "") {
+            alert("不能空")
+        }
+        var files = $('#fileId').prop('files'); //获取到文件列表
+        console.log(files.length);
+        if(files.length == 0) {
+            alert('请选择文件');
+        } else {
+            for(var i = 0; f = files[i]; i++) {
+                var reader = new FileReader(); //新建一个FileReader
+                reader.readAsText(files[i], "UTF-8"); //读取文件
+                reader.onload = function(evt) { //读取完文件之后会回来这里
+                    var fileString = evt.target.result; // 读取文件内容
+                    console.log(fileString);
+                    $.ajax({
+                        url:'data',
+                        method:'post',
+                        data: fileString,
+                        contentType:"text/html;charset=utf-8",
+                        success:function(result){
+                            if(result != null) {
+                                alert("上传成功！");
+                            }
+                        },
+                        error:function (data) {
+                        }
+                    });
+                }
+            }
+        }
+    }
+</script>
+<script type="text/javascript">
+    function blending() {
+        var number = document.getElementById("num").value;
+        $.ajax({
+            url:'blending',
+            method:'post',
+            data: number,
+            contentType:"text/html;charset=utf-8",
+            success:function(result){
+                if(result != null) {
+                    alert("计算成功！");
+                }
+            },
+            error:function (data) {
+            }
+        });
+    }
+</script>
+</body>
+</html>

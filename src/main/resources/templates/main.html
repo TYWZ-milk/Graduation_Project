@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>LoadTree</title>
+    <style>
+        body{
+            background-color: #fff;
+            margin: 0px;
+            padding: 0px;
+            overflow: hidden;
+            z-index: -1;
+        }
+        #canvas{
+            position:absolute;
+            top:0;
+            left:0;
+        }
+    </style>
+    <script type="text/javascript" th:src="@{/lib/three.js}"></script>
+    <script type="text/javascript" th:src="@{/lib/TrackballControls.js}"></script>
+    <script type="text/javascript" th:src="@{/lib/OrbitControls.js}"></script>
+    <script type="text/javascript" th:src="@{/lib/FirstPersonControls.js}"></script>
+    <script type="text/javascript" th:src="@{/lib/CanvasRenderer.js}"></script>
+    <script type="text/javascript" th:src="@{/lib/Projector.js}"></script>
+    <script type="text/javascript" th:src="@{/lib/dat.gui.min.js}"></script>
+    <script type="text/javascript" th:src="@{/lib/stats.min.js}"></script>
+    <script type="text/javascript" th:src="@{/lib/OBJLoader.js}"></script>
+    <script type="text/javascript" th:src="@{/lib/stats.min.js}"></script>
+    <script type="text/javascript" th:src="@{/lib/dat.gui.min.js}"></script>
+    <script type="text/javascript" th:inline="javascript" th:src="@{loadModel.js}"></script>
+    <script type="text/javascript" th:inline="javascript" th:src="@{init.js}"></script>
+    <script type="text/javascript" th:inline="javascript" th:src="@{ImprovedNoise.js}"></script>
+    <script type="text/javascript" th:inline="javascript" th:src="@{zpyramid.js}"></script>
+    <script type="text/javascript" th:inline="javascript" th:src="@{scene.js}"></script>
+    <script type="text/javascript" th:inline="javascript" th:src="@{LBB.js}"></script>
+    <script type="text/javascript" th:inline="javascript" th:src="@{optimize.js}"></script>
+    <script th:src="@{/lib/jquery-1.11.3.min.js}"></script>
+</head>
+<body onload="init()">
+<canvas id="canvas"></canvas>
+<div id="demo" style="z-index:1;position:absolute; height:300px; width:300px;"></div>
+</body>
+<script th:inline="javascript">
+    var message = [[${data}]];
+    console.log(message);
+</script>
+</html>
