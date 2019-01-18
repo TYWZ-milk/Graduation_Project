@@ -9,7 +9,7 @@
 <div>
     上传文件 ： <input type="file" name="file" multiple id="fileId" />
     <button type="submit" name="btn" value="上传" id="btnId" onclick="upload()">上传</button>
-    <input type="text" placeholder="请输入森林规模" id="num"
+    <input type="text" placeholder="请输入基样例树木" id="num"
            onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
            onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"/>
     <button type="submit" name="btn" value="计算" id="number" onclick="blending()">计算</button>

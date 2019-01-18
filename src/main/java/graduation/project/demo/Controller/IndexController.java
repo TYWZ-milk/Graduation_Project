@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -25,13 +26,12 @@ import java.util.List;
 @Controller
 public class IndexController {
 
-    private static List<Object> tree1 = new ArrayList<>();
-    private static List<Object> tree2 = new ArrayList<>();
-    private static List<Object> tree = new ArrayList<>();
-    private static List<Object> trees = new ArrayList<>();
-    public static ArrayList<Object>  ptree1= new ArrayList<Object>(tree1);
-    public static ArrayList<Object>  ptree2= new ArrayList<Object>(tree2);
-    private static List<Object> blendtree = new ArrayList<>();
+    private static List<List<List<Node>>> tree1 = new ArrayList<>();
+    private static List<List<List<Node>>> tree2 = new ArrayList<>();
+    private static List<List<List<List<Node>>>> trees = new ArrayList<>();
+    private static List<List<List<Node>>>  ptree1= new ArrayList<>(tree1);
+    private static List<List<List<Node>>>  ptree2= new ArrayList<>(tree2);
+    private static List<List<List<Node>>> blendtree = new ArrayList<>();
     private static List<Object> reusableset = new ArrayList<>();
     private static List<Document> documents = new ArrayList<>();
 
@@ -48,30 +48,47 @@ public class IndexController {
         return "index";
     }
 
+    public List<List<List<Node>>> copy(List<List<List<Node>>> tree){
+        List<List<List<Node>>> copyTree = new ArrayList<>();
+        List<List<Node>> layer = new ArrayList<>();
+        List<Node> trunk = new ArrayList<>();
+        for (List<List<Node>> lists : tree) {
+            for (List<Node> list : lists) {
+                trunk.addAll(list);
+                layer.add(trunk);
+                trunk = new ArrayList<>();
+            }
+            copyTree.add(layer);
+            layer = new ArrayList<>();
+        }
+        return copyTree;
+    }
+
     @RequestMapping(value = "/blending", method = RequestMethod.POST)
     public String blend(@RequestBody String number, HttpSession session) {
-        tree1 = (List<Object>) trees.get(0);
-        tree2 = (List<Object>) trees.get(1);
-        reusableSet();
-        addZero(tree1,tree2);
-        int forestSize = Integer.parseInt(number);
         long startTime=System.currentTimeMillis();
         Date now = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");//可以方便地修改日期格式
         String time = dateFormat.format( now );
-        for(int total= 0;total<forestSize;total++) {
-            tree = new ArrayList<>();
-            ArrayList<Object>temp = new ArrayList<>(blendtree);
-            blendtree = new ArrayList<>();
-            if (total == 0)
-                blending(ptree1, ptree2);
-            else if (total < forestSize / 2)
-                blending(temp, ptree1);
-            else
-                blending(temp, ptree2);
-            compact();
-            System.out.format("第%d棵树木生成完成\n",total+1);
-            save(time);
+        int forestSize = Integer.parseInt(number)/(trees.size()-1);
+        for(int seq = 1; seq<trees.size();seq++) {
+            tree1 = copy(trees.get(0));
+            tree2 = copy(trees.get(seq));
+            reusableSet();
+            addZero(tree1, tree2);
+            for (int total = 0; total < forestSize; total++) {
+                List<List<List<Node>>> temp = new ArrayList<>(blendtree);
+                blendtree = new ArrayList<>();
+                if (total == 0)
+                    blending(ptree1, ptree2);
+                else if (total < forestSize / 2)
+                    blending(temp, ptree1);
+                else
+                    blending(temp, ptree2);
+                compact();
+                System.out.format("第%d棵树木生成完成\n", total + 1);
+                save(time);
+            }
         }
         session.setAttribute("timeid",time);
         toMongo();
@@ -80,10 +97,10 @@ public class IndexController {
         return "index";
     }
 
-    private static void readFile(String txt1, List<Object> tree1){
+    private static void readFile(String txt1, List<List<List<Node>>> tree1){
         String content = txt1;
         content = content.replaceAll("\r", "");
-        List<Object> layer = new ArrayList<Object>();
+        List<List<Node>> layer = new ArrayList<>();
 
         String x="" , y="", z="";
         String radius="";
@@ -91,7 +108,7 @@ public class IndexController {
         String branchLength="";
         int inumber = 0;
         int branchlength = 0;
-        List<Node> trunk = new ArrayList<Node>();
+        List<Node> trunk = new ArrayList<>();
         String child = "";
         String position="";
         for(int i =0; i <content.length();i++){
@@ -173,9 +190,9 @@ public class IndexController {
                     inumber--;
                     if(inumber == 0){
                         tree1.add(layer);
-                        layer = new ArrayList<Object>();
+                        layer = new ArrayList<>();
                     }
-                    trunk = new ArrayList<Node>();
+                    trunk = new ArrayList<>();
                 }
             }
         }
@@ -242,10 +259,12 @@ public class IndexController {
         return rtrunk;
     }
     //数据预处理 包括添加零枝干、零枝干层、不同层处理
-    public static void addZero(List<Object>tree1,List<Object>tree2){
-        ArrayList<Object> layer = new ArrayList<Object>();
-        ptree1= new ArrayList<Object>(tree1);
-        ptree2= new ArrayList<Object>(tree2);
+    public static void addZero(List<List<List<Node>>>tree1,List<List<List<Node>>>tree2){
+        List<List<Node>> layer;
+        ptree1= new ArrayList<>();
+        ptree2= new ArrayList<>();
+        ptree1.addAll(tree1);
+        ptree2.addAll(tree2);
         if(ptree2.size()!=ptree1.size()){
             if(ptree2.size() > ptree1.size() && ((ArrayList) ptree2.get( ptree2.size()-2)).size() < ((ArrayList) ptree1.get( ptree1.size()-1)).size()){
                 int interval = ((ArrayList) ptree1.get( ptree1.size()-1)).size()/((ArrayList) ptree2.get( ptree2.size()-2)).size();
@@ -267,25 +286,27 @@ public class IndexController {
         for(var i=0 ; i<tree1.size()||i<tree2.size();i++){
             int interval;
             int dvalue;
-            ArrayList<Object> zero = new ArrayList<>();
-            zero.add('0');
-            layer = new ArrayList<Object>();
+            ArrayList<Node> zero = new ArrayList<>();
+            Node zeroN = new Node();
+            zeroN.zero = true;
+            zero.add(zeroN);
+            layer = new ArrayList<>();
             if(i>=tree1.size()){
-                for(var j=0;j<((ArrayList)tree2.get(i)).size();j++){
+                for(var j = 0; j< tree2.get(i).size(); j++){
                     layer.add(zero);
                 }
                 ptree1.add(layer);
             }
             else if(i>=tree2.size()){
-                for(var j=0;j<((ArrayList)tree1.get(i)).size();j++){
+                for(var j = 0; j< tree1.get(i).size(); j++){
                     layer.add(zero);
                 }
                 ptree2.add(layer);
             }
-            else if(((ArrayList)tree1.get(i)).size() > ((ArrayList)tree2.get(i)).size()){
-                interval = ((ArrayList)tree1.get(i)).size()/((ArrayList)tree2.get(i)).size()+1;
-                dvalue = ((ArrayList)tree1.get(i)).size() - ((ArrayList)tree2.get(i)).size();
-                for(int j= 0,n=0; j<((ArrayList)tree1.get(i)).size(); j++){
+            else if(tree1.get(i).size() > tree2.get(i).size()){
+                interval = tree1.get(i).size()/ tree2.get(i).size()+1;
+                dvalue = tree1.get(i).size() - tree2.get(i).size();
+                for(int j = 0, n = 0; j< tree1.get(i).size(); j++){
                     if(j%interval!=0 && dvalue!=0) {
                         layer.add(zero);
                         dvalue--;
@@ -325,10 +346,10 @@ public class IndexController {
         }
     }
     //生成过渡树木层次结构
-    public static void blending(List<Object>ptree1,List<Object>ptree2){
-        ArrayList<Object> layer = new ArrayList<>();
-        ArrayList<Object> temptree2 = new ArrayList<Object>(ptree2);
-        ArrayList<Object> temptree1 = new ArrayList<Object>(ptree1);
+    public static void blending(List<List<List<Node>>>ptree1,List<List<List<Node>>>ptree2){
+        List<List<Node>> layer = new ArrayList<>();
+        List<List<List<Node>>> temptree2 = new ArrayList<>(ptree2);
+        List<List<List<Node>>> temptree1 = new ArrayList<>(ptree1);
         ArrayList<Node> trunk = new ArrayList<>();
         for(var i=0;i<ptree1.size()||i<ptree2.size();i++){
             if(i==0) {
