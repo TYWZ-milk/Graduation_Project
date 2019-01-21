@@ -74,9 +74,12 @@ public class IndexController {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");//可以方便地修改日期格式
         String time = dateFormat.format( now );
         int forestSize = Integer.parseInt(number)/(trees.size()-1);
-        for(int seq = 1; seq<trees.size();seq++) {
-            tree1 = copy(trees.get(0));
-            tree2 = copy(trees.get(seq));
+        for(int seq = 0; seq<trees.size();seq++) {
+            tree1 = copy(trees.get(seq));
+            if(seq+1 == trees.size())
+                tree2 = copy(trees.get(0));
+            else
+                tree2 = copy(trees.get(seq+1));
             reusableSet();
             addZero(tree1, tree2);
             for (int total = 0; total < forestSize; total++) {

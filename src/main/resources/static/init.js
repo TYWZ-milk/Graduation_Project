@@ -43,7 +43,7 @@ function init() {
     //THREE.Cache.clear();
 
     initStats();
-    initGui();
+    //initGui();
     initScene();
     initObject();
     newtreecircle(message);
@@ -109,7 +109,7 @@ function smallMap(){
 
 }
 
-//控制面板
+
 function initStats() {
 
     stats = new Stats();
@@ -218,8 +218,11 @@ function animate() {
 
     //每10秒更新一次界面，防止频闪现象
     var d= new Date();
-    if(d.getSeconds()%10 === 0)
+    if(d.getSeconds()%10 === 0) {
         forestupdate();
+        console.log(update);
+        update = 0;
+    }
     //leavesupdate();
 
     //浏览轨道控制
