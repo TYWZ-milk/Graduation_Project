@@ -42,9 +42,9 @@ public class IndexController {
 
     @RequestMapping(value = "/data", method = RequestMethod.POST)
     public String data(@RequestBody String fileString) {
+        tree1 = new ArrayList<>();
         readFile(fileString, tree1);
         trees.add(tree1);
-        tree1 = new ArrayList<>();
         return "index";
     }
 
@@ -66,6 +66,9 @@ public class IndexController {
 
     @RequestMapping(value = "/blending", method = RequestMethod.POST)
     public String blend(@RequestBody String number, HttpSession session) {
+        tree1 = new ArrayList<>();
+        tree2 = new ArrayList<>();
+        documents = new ArrayList<>();
         long startTime=System.currentTimeMillis();
         Date now = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");//可以方便地修改日期格式
@@ -94,6 +97,7 @@ public class IndexController {
         toMongo();
         long endTime=System.currentTimeMillis(); //获取结束时间
         System.out.println("程序运行时间： "+(endTime-startTime)+"ms");
+        trees = new ArrayList<>();
         return "index";
     }
 

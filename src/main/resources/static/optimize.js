@@ -26,6 +26,8 @@ function forestupdate(){
         }
         //if(j>2) {
         forest[j][0].visible = (j % le === 0);
+        if(z>1)
+            forest[j][0].visible = false;
         //}
         //对叶子采取同样的操作
         if(forest[j][0].visible === false){
