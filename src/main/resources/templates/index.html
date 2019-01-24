@@ -4,19 +4,50 @@
     <meta charset="UTF-8" />
     <title>Document</title>
     <script th:src="@{/lib/jquery-1.11.3.min.js}"></script>
+    <link th:href="@{/demo.css}" rel="stylesheet" type="text/css">
+    <script th:src="@{/lib/jquery-ui.js}" type="text/javascript"></script>
+    <!--End Framework-->
+    <script th:src="@{/lib/jquery.ffform.js}" type="text/javascript"></script>
+
 </head>
-<body>
-<div>
-    上传文件 ： <input type="file" name="file" multiple id="fileId" />
-    <button type="submit" name="btn" value="上传" id="btnId" onclick="upload()">上传</button>
-    <input type="text" placeholder="请输入基样例树木" id="num"
-           onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
-           onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"/>
-    <button type="submit" name="btn" value="计算" id="number" onclick="blending()">计算</button>
-    <a th:href="@{/main}">
-        <button>森林浏览</button>
-    </a>
-</div>
+<body class="flipInX animated">
+<section id="getintouch">
+    <div class="container" style="border-bottom: 0;">
+        <h1>
+            <span>大规模森林在线生成平台</span>
+        </h1>
+    </div>
+    <div class="container">
+        <div class="contact">
+            <div class="row clearfix">
+                <div class="lbl">
+                    上传文件 ： <input type="file" name="file" multiple id="fileId" />
+                </div>
+                <div class="ctrl">
+                    <button type="submit" name="btn" value="上传" id="btnId" onclick="upload()">上传</button>
+                </div>
+            </div>
+            <div class="row clearfix">
+                <input type="text" placeholder="请输入基样例树木个数" id="num"
+                       onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
+                       onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"/>
+                <button type="submit" name="btn" value="计算" id="number" onclick="blending()">计算</button>
+            </div>
+            <div class="row clearfix">
+                <a th:href="@{/main}">
+                    <button>森林浏览</button>
+                </a>
+            </div>
+        </div>
+        <div class="txt-color">
+            首先上传所有生成森林所需的树木模型文件</div>
+        <div class="txt-color">
+            其次输入森林规模，之后点击计算</div>
+        <div class="txt-color">
+            计算完成后，森林便已生成，可以浏览森林
+        </div>
+    </div>
+</section>
 <script type="text/javascript">
     function upload() {
         var objFile = document.getElementById("fileId");
