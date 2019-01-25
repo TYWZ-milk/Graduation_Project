@@ -222,6 +222,7 @@ function animate() {
         forestupdate();
         console.log(update);
         update = 0;
+        console.log(forest.size())
     }
     //leavesupdate();
 

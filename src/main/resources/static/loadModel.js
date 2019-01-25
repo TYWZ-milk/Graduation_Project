@@ -135,7 +135,7 @@ function newtreecircle(content){
         //var instencedMesh = new THREE.Mesh(branchesgeo, material);
         //scene.add(instencedMesh);
         //branchesgeo = new THREE.Geometry();
-        for(var cl = 0 ;cl<49;cl++) {
+        for(var cl = 0 ;cl<99;cl++) {
             //buffer版本
             //var temp = [];
             //for (var j = 0; j < instanceBranchSet.length; j++) {
