@@ -24,7 +24,7 @@ function loadSky() {
 var planevertices;
 function loadGround() {
     //add ground
-    var texture2 = THREE.ImageUtils.loadTexture("../textures/terrain/grasslight-big.jpg");
+    var texture2 = THREE.ImageUtils.loadTexture("../textures/terrain/backgrounddetailed6.jpg");
     texture2.wrapS = THREE.RepeatWrapping;
     texture2.wrapT = THREE.RepeatWrapping;
     texture2.repeat.set(100*50/100,100*50/100);

@@ -220,9 +220,7 @@ function animate() {
     var d= new Date();
     if(d.getSeconds()%10 === 0) {
         forestupdate();
-        console.log(update);
         update = 0;
-        console.log(forest.size())
     }
     //leavesupdate();
 
