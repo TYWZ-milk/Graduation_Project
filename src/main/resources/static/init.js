@@ -40,7 +40,7 @@ function init() {
     Trackcontrols.lookSpeed = 0.1;
     Trackcontrols.lookVertical = true;
 
-    //THREE.Cache.clear();
+    THREE.Cache.clear();
 
     initStats();
     //initGui();
