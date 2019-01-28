@@ -395,26 +395,26 @@ public class IndexController {
             if (trunk2.size()==1) {
                 circle = new Node();
                 circle.radius = trunk1.get(i).radius/2;
-                circle.posx = trunk1.get(i).posx/2;
-                circle.posy = trunk1.get(i).posy/2;
-                circle.posz = trunk1.get(i).posz/2;
+                circle.posx = trunk1.get(i).posx/2+(float) Math.random()*2+1;
+                circle.posy = trunk1.get(i).posy/2+(float) Math.random()*2+1;
+                circle.posz = trunk1.get(i).posz/2+(float) Math.random()*2+1;
                 circle.child = trunk1.get(i).child;
                 circle.position = trunk1.get(i).position;
             }
             else if (trunk1.size()==1) {
                 circle = new Node();
                 circle.radius = trunk2.get(i).radius/2;
-                circle.posx = trunk2.get(i).posx/2;
-                circle.posy = trunk2.get(i).posy/2;
-                circle.posz = trunk2.get(i).posz/2;
+                circle.posx = trunk2.get(i).posx/2+(float) Math.random()*2+1;
+                circle.posy = trunk2.get(i).posy/2+(float) Math.random()*2+1;
+                circle.posz = trunk2.get(i).posz/2+(float) Math.random()*2+1;
                 circle.child = trunk2.get(i).child;
                 circle.position = trunk2.get(i).position;
             }
             else if (i < trunk1.size() && i < trunk2.size()) {
                 circle = new Node();
-                circle.posx = (trunk1.get(i).posx+trunk2.get(i).posx)/2;
-                circle.posy = (trunk1.get(i).posy+trunk2.get(i).posy)/2;
-                circle.posz = (trunk1.get(i).posz+trunk2.get(i).posz)/2;
+                circle.posx = (trunk1.get(i).posx+trunk2.get(i).posx)/2+(float) Math.random()*2+1;
+                circle.posy = (trunk1.get(i).posy+trunk2.get(i).posy)/2+(float) Math.random()*2+1;
+                circle.posz = (trunk1.get(i).posz+trunk2.get(i).posz)/2+(float) Math.random()*2+1;
                 circle.radius = (trunk1.get(i).radius+trunk2.get(i).radius)/2;
                 if(trunk1.get(i).child>trunk2.get(i).child){
                     circle.child = trunk1.get(i).child;
@@ -434,7 +434,7 @@ public class IndexController {
     private static void compact(){
         for(var i=1;i<blendtree.size();i++){
 
-            for(var j=0;j<((ArrayList)blendtree.get(i)).size();j++){
+            for(var j = 0; j< blendtree.get(i).size(); j++){
                 int child = ((Node) ((ArrayList)((ArrayList) blendtree.get(i)).get(j)).get(0)).child;
                 int position = ((Node) ((ArrayList)((ArrayList) blendtree.get(i)).get(j)).get(0)).position;
                 if(position >= ((ArrayList)((ArrayList) blendtree.get(i-1)).get(child)).size())

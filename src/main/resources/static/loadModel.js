@@ -135,7 +135,7 @@ function newtreecircle(content){
         //var instencedMesh = new THREE.Mesh(branchesgeo, material);
         //scene.add(instencedMesh);
         //branchesgeo = new THREE.Geometry();
-        for(var cl = 0 ;cl<20;cl++) {
+        for(var cl = 0 ;cl<49;cl++) {
             //buffer版本
             //var temp = [];
             //for (var j = 0; j < instanceBranchSet.length; j++) {
@@ -150,34 +150,34 @@ function newtreecircle(content){
             //planepos+=30 * Math.floor(Math.random() * 6 + 1);
 
             //geometry版本的克隆
-            // var temp = [];
-            // for (var seq = 0; seq < tree.length; seq++) {
-            //     temp.push(tree[seq].clone());
-            //     temp[seq].position.x -=tree[0].position.x;
-            //     temp[seq].position.y -=tree[0].position.y;
-            //     temp[seq].position.z -=tree[0].position.z;
-            // }
-            // forest.push(temp);
-            // moveTree(temp);
-            // planepos+=30 * Math.floor(Math.random() * 12 + 1);
+            var temp = [];
+            for (var seq = 0; seq < tree.length; seq++) {
+                temp.push(tree[seq].clone());
+                temp[seq].position.x -=tree[0].position.x;
+                temp[seq].position.y -=tree[0].position.y;
+                temp[seq].position.z -=tree[0].position.z;
+            }
+            forest.push(temp);
+            moveTree(temp);
+            planepos+=30 * Math.floor(Math.random() * 12 + 1);
 
             //geometry版本的随机化
-            var temp = [];
-            for(var layer = 0; layer <treecircle.length;layer++){
-                var templayer = [];
-                for(var branch = 0; branch<treecircle[layer].length;branch++){
-                    if(branch%5===0) {  //对五分之一的枝干随机化
-                        var randomPos = Math.floor(Math.random() * 3 + 1);
-                        circle = {
-                            radius: parseFloat(treecircle[layer][branch].radius),
-                            pos: new THREE.Vector3(parseFloat(treecircle[layer][branch].pos.x + randomPos), parseFloat(treecircle[layer][branch].pos.y + randomPos), parseFloat(treecircle[layer][branch].pos.z + randomPos))
-                        };
-                        templayer.push(circle);
-                    }
-                }
-                temp.push(templayer);
-            }
-            draw(temp);
+            // var temp = [];
+            // for(var layer = 0; layer <treecircle.length;layer++){
+            //     var templayer = [];
+            //     for(var branch = 0; branch<treecircle[layer].length;branch++){
+            //         if(branch%5===0) {  //对五分之一的枝干随机化
+            //             var randomPos = Math.floor(Math.random() * 3 + 1);
+            //             circle = {
+            //                 radius: parseFloat(treecircle[layer][branch].radius),
+            //                 pos: new THREE.Vector3(parseFloat(treecircle[layer][branch].pos.x + randomPos), parseFloat(treecircle[layer][branch].pos.y + randomPos), parseFloat(treecircle[layer][branch].pos.z + randomPos))
+            //             };
+            //             templayer.push(circle);
+            //         }
+            //     }
+            //     temp.push(templayer);
+            // }
+            // draw(temp);
         }
         tree = [];
         forestupdate();
