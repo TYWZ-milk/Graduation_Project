@@ -14,11 +14,7 @@ function init() {
     scene = new THREE.Scene();
 
     branchImg = new THREE.ImageUtils.loadTexture("../textures/tree/diffuse-min.png");
-    material = new THREE.MeshLambertMaterial({
-        // wireframe:true,
-        side:THREE.DoubleSide,
-        map:branchImg
-    });
+    material = new THREE.MeshNormalMaterial();
 
     var canvas = document.getElementById("canvas");
     renderer = new THREE.WebGLRenderer({
