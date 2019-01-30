@@ -2,10 +2,14 @@ var camera, scene, renderer, Trackcontrols;
 var material;
 var tree1 = [];
 var tree = [];
+var pos = 0;
 function init() {
     THREE.Cache.clear();
     camera = new THREE.PerspectiveCamera(45,window.innerWidth / window.innerHeight,1,100000);
-    camera.position.z = 1;
+    camera.position.z = 700;
+    camera.position.y = 90;
+    camera.position.x = -800;
+
 
     scene = new THREE.Scene();
 
@@ -21,7 +25,7 @@ function init() {
         antialias:true,
         canvas:canvas
     });
-    renderer.setClearColor(0xaaaaaa,1.0);
+    renderer.setClearColor(0xFFFFFF,1.0);
 
     Trackcontrols = new THREE.OrbitControls( camera, renderer.domElement );
     Trackcontrols.movementSpeed = 500;
@@ -32,6 +36,8 @@ function init() {
 }
 
 function showBaseTree(fileStr) {
+    tree1 = [];
+    tree = [];
     var layer = [];
     var circle;
     var x="", y="",z="";
@@ -127,12 +133,13 @@ function showBaseTree(fileStr) {
     }
     compact(tree1);
     drawTree(tree1);
-    moveTree(tree,-5,-5);
+    moveTree(tree,pos,pos);
+    pos++;
 }
 function moveTree(tree,x,y){
     for(var i=0; i <tree.length;i++){
-        tree[i].position.x -= x*50;
-        tree[i].position.z -= y*50;
+        tree[i].position.x -= x*250;
+        tree[i].position.z -= y*250;
         scene.add(tree[i]);
     }
 }
