@@ -9,15 +9,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * 这里的@RestController   相当于@ResponseBody + @Controller
@@ -65,7 +63,8 @@ public class IndexController {
     }
 
     @RequestMapping(value = "/blending", method = RequestMethod.POST)
-    public String blend(@RequestBody String number, HttpSession session) {
+    @ResponseBody
+    public Map<String,List<Document>> blend(@RequestBody String number, HttpSession session) {
         tree1 = new ArrayList<>();
         tree2 = new ArrayList<>();
         documents = new ArrayList<>();
@@ -101,7 +100,9 @@ public class IndexController {
         long endTime=System.currentTimeMillis(); //获取结束时间
         System.out.println("程序运行时间： "+(endTime-startTime)+"ms");
         trees = new ArrayList<>();
-        return "index";
+        Map map = new HashMap();
+        map.put("context",documents);
+        return map;
     }
 
     private static void readFile(String txt1, List<List<List<Node>>> tree1){
