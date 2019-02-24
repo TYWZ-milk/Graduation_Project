@@ -185,10 +185,6 @@ public class IndexController {
             i = j;
             if(branchlength!=0) {
                 Node circle = new Node();
-                circle.radius = Float.parseFloat(radius)*70;
-                circle.posx = Float.parseFloat(x)*70;
-                circle.posy = Float.parseFloat(y)*70;
-                circle.posz = Float.parseFloat(z)*70;
                 circle.child = Integer.parseInt(child);
                 circle.position = Integer.parseInt(position);
                 trunk.add(circle);
@@ -396,26 +392,26 @@ public class IndexController {
             if (trunk2.size()==1) {
                 circle = new Node();
                 circle.radius = trunk1.get(i).radius/2;
-                circle.posx = trunk1.get(i).posx/2+(float) Math.random()*2+1;
-                circle.posy = trunk1.get(i).posy/2+(float) Math.random()*2+1;
-                circle.posz = trunk1.get(i).posz/2+(float) Math.random()*2+1;
+                circle.posx = trunk1.get(i).posx/2;
+                circle.posy = trunk1.get(i).posy/2;
+                circle.posz = trunk1.get(i).posz/2;
                 circle.child = trunk1.get(i).child;
                 circle.position = trunk1.get(i).position;
             }
             else if (trunk1.size()==1) {
                 circle = new Node();
                 circle.radius = trunk2.get(i).radius/2;
-                circle.posx = trunk2.get(i).posx/2+(float) Math.random()*2+1;
-                circle.posy = trunk2.get(i).posy/2+(float) Math.random()*2+1;
-                circle.posz = trunk2.get(i).posz/2+(float) Math.random()*2+1;
+                circle.posx = trunk2.get(i).posx/2;
+                circle.posy = trunk2.get(i).posy/2;
+                circle.posz = trunk2.get(i).posz/2;
                 circle.child = trunk2.get(i).child;
                 circle.position = trunk2.get(i).position;
             }
             else if (i < trunk1.size() && i < trunk2.size()) {
                 circle = new Node();
-                circle.posx = (trunk1.get(i).posx+trunk2.get(i).posx)/2+(float) Math.random()*2+1;
-                circle.posy = (trunk1.get(i).posy+trunk2.get(i).posy)/2+(float) Math.random()*2+1;
-                circle.posz = (trunk1.get(i).posz+trunk2.get(i).posz)/2+(float) Math.random()*2+1;
+                circle.posx = (trunk1.get(i).posx+trunk2.get(i).posx)/2;
+                circle.posy = (trunk1.get(i).posy+trunk2.get(i).posy)/2;
+                circle.posz = (trunk1.get(i).posz+trunk2.get(i).posz)/2;
                 circle.radius = (trunk1.get(i).radius+trunk2.get(i).radius)/2;
                 if(trunk1.get(i).child>trunk2.get(i).child){
                     circle.child = trunk1.get(i).child;
