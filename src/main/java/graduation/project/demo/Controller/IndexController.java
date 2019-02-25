@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.Console;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -72,20 +73,26 @@ public class IndexController {
         Date now = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");//可以方便地修改日期格式
         String time = dateFormat.format( now );
-        int forestSize = Integer.parseInt(number)/(trees.size()-1);
+        int forestSize = Integer.parseInt(number)/(trees.size());
         for(int seq = 0; seq<trees.size();seq++) {
             tree1 = copy(trees.get(seq));
             if(seq+1 == trees.size())
                 tree2 = copy(trees.get(0));
             else
                 tree2 = copy(trees.get(seq+1));
-            reusableSet();
             addZero(tree1, tree2);
+            List<List<List<Node>>> midTree = new ArrayList<>();
             for (int total = 0; total < forestSize; total++) {
                 List<List<List<Node>>> temp = new ArrayList<>(blendtree);
+                if(total==forestSize/2) {
+                    temp = new ArrayList<>(midTree);
+                    Collections.reverse(documents);
+                }
                 blendtree = new ArrayList<>();
-                if (total == 0)
+                if (total == 0) {
                     blending(ptree1, ptree2);
+                    midTree = new ArrayList<>(blendtree);
+                }
                 else if (total < forestSize / 2)
                     blending(temp, ptree1);
                 else
@@ -185,6 +192,10 @@ public class IndexController {
             i = j;
             if(branchlength!=0) {
                 Node circle = new Node();
+                circle.radius = Float.parseFloat(radius)*70;
+                circle.posx = Float.parseFloat(x)*70;
+                circle.posy = Float.parseFloat(y)*70;
+                circle.posz = Float.parseFloat(z)*70;
                 circle.child = Integer.parseInt(child);
                 circle.position = Integer.parseInt(position);
                 trunk.add(circle);
@@ -322,15 +333,15 @@ public class IndexController {
                     if(layer.size() == ((ArrayList)tree1.get(i)).size())
                         break;
                 }
-                ((ArrayList) ptree2.get(i)).clear();
+                ptree2.get(i).clear();
                 for(int q=0;q<layer.size();q++){
-                    ((ArrayList) ptree2.get(i)).add(layer.get(i));
+                    ptree2.get(i).add(layer.get(q));
                 }
             }
-            else if(((ArrayList)tree1.get(i)).size() < ((ArrayList)tree2.get(i)).size()){
-                interval = ((ArrayList)tree2.get(i)).size()/((ArrayList)tree1.get(i)).size()+1;
-                dvalue = ((ArrayList)tree2.get(i)).size() - ((ArrayList)tree1.get(i)).size();
-                for(int j= 0,n=0; j<((ArrayList)tree2.get(i)).size(); j++){
+            else if(tree1.get(i).size() < tree2.get(i).size()){
+                interval = tree2.get(i).size()/ tree1.get(i).size()+1;
+                dvalue = tree2.get(i).size() - tree1.get(i).size();
+                for(int j = 0, n = 0; j< tree2.get(i).size(); j++){
                     if(j%interval!=0 && dvalue!=0) {
                         layer.add(zero);
                         dvalue--;
@@ -415,7 +426,7 @@ public class IndexController {
                 circle.radius = (trunk1.get(i).radius+trunk2.get(i).radius)/2;
                 if(trunk1.get(i).child>trunk2.get(i).child){
                     circle.child = trunk1.get(i).child;
-                    circle.position = trunk2.get(i).position;
+                    circle.position = trunk1.get(i).position;
 
                 }
                 else{
