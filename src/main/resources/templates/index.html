@@ -86,20 +86,21 @@
                 reader.onload = function(evt) { //读取完文件之后会回来这里
                     var fileString = evt.target.result; // 读取文件内容
                     console.log(fileString);
-                    showBaseTree(fileString);
-                    $.ajax({
-                        url:'data',
-                        method:'post',
-                        data: fileString,
-                        contentType:"text/html;charset=utf-8",
-                        success:function(result){
-                            if(result != null) {
-                                alert("上传成功！");
-                            }
-                        },
-                        error:function (data) {
-                        }
-                    });
+                    //showBaseTree(fileString);
+                    showObjTree(fileString);
+                    // $.ajax({
+                    //     url:'data',
+                    //     method:'post',
+                    //     data: fileString,
+                    //     contentType:"text/html;charset=utf-8",
+                    //     success:function(result){
+                    //         if(result != null) {
+                    //             alert("上传成功！");
+                    //         }
+                    //     },
+                    //     error:function (data) {
+                    //     }
+                    // });
                 }
             }
         }

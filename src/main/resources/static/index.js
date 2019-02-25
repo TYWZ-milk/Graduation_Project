@@ -31,6 +31,47 @@ function init() {
     animate();
 }
 
+function showObjTree(fileStr) {
+    var x = "";
+    var y = "";
+    var z ="";
+    var points = [];
+    var cir = 0;
+    for(var i = 0;i<fileStr.length;i++){
+        if(fileStr[i]=== 'v')
+            i+=3;
+        else if(fileStr[i+2] === '#')
+            break;
+        else if(fileStr[i+1]==='\n'){
+            cir =0;
+            var point = new THREE.Vector3(x * 100, y * 100, z * 100);
+            points.push(point);
+            i+=5;
+            x="";
+            y="";
+            z="";
+        }
+        if(fileStr[i]!==' ' && cir===0)
+            x+=fileStr[i];
+        else if(fileStr[i]!==' '&& cir===1)
+            y+=fileStr[i];
+        else if(fileStr[i]!==' '&& cir === 2)
+            z+=fileStr[i];
+        else if(fileStr[i]===' ')
+            cir++;
+
+    }
+    for(var j = 0;j <points.length;j++) {
+        var cube = new THREE.Mesh(new THREE.CubeGeometry(3, 3, 3),
+            new THREE.MeshBasicMaterial({
+                color: 0xff0000
+            })
+        );
+        cube.position.set(points[j].x,points[j].y,points[j].z);
+        scene.add(cube);
+    }
+}
+
 function showBaseTree(fileStr) {
     tree1 = [];
     tree = [];
