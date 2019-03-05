@@ -137,31 +137,31 @@ function newtreecircle(content){
         //branchesgeo = new THREE.Geometry();
         //50个同态树木
         for(var cl = 0 ;cl<49;cl++) {
-            //buffer版本
-            var temp = [];
-            for (var j = 0; j < tree.length; j++) {
-               temp.push(tree[j].clone());
-            }
-            for(var po = 0; po<tree.length;po++) {
-                temp[po].position.x -= tree[0].position.x;
-                temp[po].position.y -= tree[0].position.y;
-                temp[po].position.z -= tree[0].position.z;
-            }
-            forest.push(temp);
-            moveTree(temp);
-            planepos+=30 * Math.floor(Math.random() * 6 + 1);
-
-            //geometry版本的克隆
+            // //buffer版本
             // var temp = [];
-            // for (var seq = 0; seq < tree.length; seq++) {
-            //     temp.push(tree[seq].clone());
-            //     temp[seq].position.x -=tree[0].position.x;
-            //     temp[seq].position.y -=tree[0].position.y;
-            //     temp[seq].position.z -=tree[0].position.z;
+            // for (var j = 0; j < tree.length; j++) {
+            //    temp.push(tree[j].clone());
+            // }
+            // for(var po = 0; po<tree.length;po++) {
+            //     temp[po].position.x -= tree[0].position.x;
+            //     temp[po].position.y -= tree[0].position.y;
+            //     temp[po].position.z -= tree[0].position.z;
             // }
             // forest.push(temp);
             // moveTree(temp);
-            // planepos+=30 * Math.floor(Math.random() * 12 + 1);
+            // planepos+=30 * Math.floor(Math.random() * 6 + 1);
+
+            //geometry版本的克隆
+            var temp = [];
+            for (var seq = 0; seq < tree.length; seq++) {
+                temp.push(tree[seq].clone());
+                temp[seq].position.x -=tree[0].position.x;
+                temp[seq].position.y -=tree[0].position.y;
+                temp[seq].position.z -=tree[0].position.z;
+            }
+            forest.push(temp);
+            moveTree(temp);
+            planepos+=30 * Math.floor(Math.random() * 12 + 1);
         }
         tree = [];
         forestupdate();
@@ -172,16 +172,16 @@ function newtreecircle(content){
 var tree = [];
 function draw(treecircle){
     tree = [];
-    // branchesgeo = new THREE.Geometry();
+    branchesgeo = new THREE.Geometry();
     drawTree(treecircle);
     addLeaf(treecircle);
 
     //branches为一棵树所有枝干merge后的
-    // var branches = new THREE.Mesh(branchesgeo,material);
+    var branches = new THREE.Mesh(branchesgeo,material);
     var randomsize = Math.random() * 10 + 3;
     // branch.scale.set(randomy/randomsize,randomy,randomy/randomsize);
     // leaves.scale.set(randomy/randomsize,randomy,randomy/randomsize);
-
+    tree.push(branches);
 
     tree[0].maintrunk = true;
     tree[0].childs = [];
@@ -195,7 +195,7 @@ function draw(treecircle){
     forest.push(tree);
 }
 //有buffer的老版本drawbranch，绘制每一个branch
-var geo = new THREE.BufferGeometry();
+var geo = new THREE.Geometry();
 var branchesgeo = new THREE.Geometry();
 /**
  * @return {boolean}
@@ -208,7 +208,7 @@ function drawBranch(trunk) {
     var seg = 3 ;
     var vertices = [];
     var _32array = [];
-    geo = new THREE.BufferGeometry();
+    geo = new THREE.Geometry();
     for (var i = 0, l = trunk.length; i < l - 1; i++) {
         var circle = trunk[i];
         for (var s = 0; s < seg; s++) {//for each point in the circle
@@ -240,17 +240,26 @@ function drawBranch(trunk) {
                 pos.y = 0;
                 pos.z = rd * Math.sin(2 * Math.PI / seg * s);
             }
-            vertices.push(pos.add(circle.pos));
+            geo.vertices.push(pos.add(circle.pos));
         }
     }
-    vertices.push(trunk[trunk.length-1].pos);
-    _32array = translate(vertices,seg);
-    geo.addAttribute( 'position', new THREE.Float32BufferAttribute( _32array, 3 ) );
-    geo.computeVertexNormals();
-    branch = new THREE.Mesh(geo,material);
+    for(i=0;i<l-2;i++){
+        for(s=0;s<seg;s++){
+            var v1 = i*seg+s;
+            var v2 = i*seg+(s+1)%seg;
+            var v3 = (i+1)*seg+(s+1)%seg;
+            var v4 = (i+1)*seg+s;
+
+            geo.faces.push(new THREE.Face3(v1,v2,v3));
+            geo.faceVertexUvs[0].push([new THREE.Vector2(s/seg,0),new THREE.Vector2((s+1)/seg,0),new THREE.Vector2((s+1)/seg,1)]);
+            geo.faces.push(new THREE.Face3(v3,v4,v1));
+            geo.faceVertexUvs[0].push([new THREE.Vector2((s+1)/seg,1),new THREE.Vector2((s)/seg,1),new THREE.Vector2((s)/seg,0)]);
+        }
+    }
+
+    var branch = new THREE.Mesh(geo,material);
     branch.updateMatrix();
-    //branchesgeo.merge(branch.geometry,branch.matrix);
-    tree.push(branch);
+    branchesgeo.merge(branch.geometry,branch.matrix);
 }
 //点集转换为32Array，用于BufferGeometry的position属性
 function translate(vertices,precision){

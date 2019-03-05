@@ -1,5 +1,6 @@
 var camera2, scene2, renderer2, Trackcontrols2;
 var material;
+var branchesgeo = new THREE.Geometry();
 function result() {
     THREE.Cache.clear();
     camera2 = new THREE.PerspectiveCamera(45,window.innerWidth / window.innerHeight,1,100000);
@@ -90,19 +91,25 @@ function newtreecircle(content){
                 radius = "";
             }
         }
+        branchesgeo = new THREE.Geometry();
         drawTree2(treecircle);
+        var branches = new THREE.Mesh(branchesgeo,material);
+        branches.position.x -= planepos*250;
+        branches.position.z -= planepos*250;
+        branches.scale.set(6,6,6);
+        scene2.add(branches);
         planepos++;
     }
 }
 //将圆环序列还原成树
 var planepos = 0;
-var geo = new THREE.BufferGeometry();
+var geo = new THREE.Geometry();
 function drawBlendBranch(trunk) {
 
-    var seg = 5 ;
+    var seg = 5;
     var vertices = [];
     var _32array = [];
-    geo = new THREE.BufferGeometry();
+    geo = new THREE.Geometry();
     for (var i = 0, l = trunk.length; i < l - 1; i++) {
         var circle = trunk[i];
         for (var s = 0; s < seg; s++) {//for each point in the circle
@@ -134,20 +141,27 @@ function drawBlendBranch(trunk) {
                 pos.y = 0;
                 pos.z = rd * Math.sin(2 * Math.PI / seg * s);
             }
-            vertices.push(pos.add(circle.pos));
+            geo.vertices.push(pos.add(circle.pos));
+        }
+    }
+    for(i=0;i<l-2;i++){
+        for(s=0;s<seg;s++){
+            var v1 = i*seg+s;
+            var v2 = i*seg+(s+1)%seg;
+            var v3 = (i+1)*seg+(s+1)%seg;
+            var v4 = (i+1)*seg+s;
+
+            geo.faces.push(new THREE.Face3(v1,v2,v3));
+            geo.faceVertexUvs[0].push([new THREE.Vector2(s/seg,0),new THREE.Vector2((s+1)/seg,0),new THREE.Vector2((s+1)/seg,1)]);
+            geo.faces.push(new THREE.Face3(v3,v4,v1));
+            geo.faceVertexUvs[0].push([new THREE.Vector2((s+1)/seg,1),new THREE.Vector2((s)/seg,1),new THREE.Vector2((s)/seg,0)]);
         }
     }
 
-    vertices.push(trunk[trunk.length-1].pos);
-    _32array = translate(vertices);
-    geo.addAttribute( 'position', new THREE.Float32BufferAttribute( _32array, 3 ) );
-    geo.computeVertexNormals();
     var branch = new THREE.Mesh(geo,material);
     branch.updateMatrix();
-    branch.scale.set(6,4,6);
-    branch.position.x -= 250*planepos;
-    branch.position.z -= 250*planepos;
-    scene2.add(branch);
+    branchesgeo.merge(branch.geometry,branch.matrix);
+
 }
 
 //绘制一棵树

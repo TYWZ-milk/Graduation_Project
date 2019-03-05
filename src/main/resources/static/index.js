@@ -3,6 +3,7 @@ var material;
 var tree1 = [];
 var tree = [];
 var pos = 0;
+var branchesgeo = new THREE.Geometry();
 function init() {
     THREE.Cache.clear();
     camera = new THREE.PerspectiveCamera(45,window.innerWidth / window.innerHeight,1,100000);
@@ -44,7 +45,7 @@ function showObjTree(fileStr) {
             break;
         else if(fileStr[i+1]==='\n'){
             cir =0;
-            var point = new THREE.Vector3(x * 100, y * 100, z * 100);
+            var point = new THREE.Vector3(x * 60, y * 60, z * 60);
             points.push(point);
             i+=5;
             x="";
@@ -61,6 +62,7 @@ function showObjTree(fileStr) {
             cir++;
 
     }
+    console.log(points.length);
     for(var j = 0;j <points.length;j++) {
         var cube = new THREE.Mesh(new THREE.CubeGeometry(3, 3, 3),
             new THREE.MeshBasicMaterial({
@@ -168,17 +170,18 @@ function showBaseTree(fileStr) {
             }
         }
     }
+    branchesgeo = new THREE.Geometry();
     compact(tree1);
     drawTree(tree1);
-    moveTree(tree,pos,pos);
+    var branches = new THREE.Mesh(branchesgeo,material);
+    moveTree(branches,pos,pos);
     pos++;
 }
 function moveTree(tree,x,y){
-    for(var i=0; i <tree.length;i++){
-        tree[i].position.x -= x*250;
-        tree[i].position.z -= y*250;
-        scene.add(tree[i]);
-    }
+    tree.position.x -= x*250;
+    tree.position.z -= y*250;
+    scene.add(tree);
+
 }
 function drawTree(blendtree){
     for(var i=0;i<blendtree.length;i++) {
@@ -207,11 +210,11 @@ function compact(blendtree){
     }
 }
 //有buffer的老版本drawbranch
-var geo = new THREE.BufferGeometry();
+var geo = new THREE.Geometry();
 function drawBranch(trunk) {
     var seg = 5;
     var vertices = [];
-    geo = new THREE.BufferGeometry();
+    geo = new THREE.Geometry();
     var _32array = [];
     for(var i = 0, l = trunk.length; i < l-1; i ++){
         var circle = trunk[i];
@@ -244,20 +247,40 @@ function drawBranch(trunk) {
                 pos.y = 0;
                 pos.z = rd * Math.sin(2 * Math.PI / seg * s);
             }
-            vertices.push(pos.add(circle.pos));
+            geo.vertices.push(pos.add(circle.pos));
         }
     }
-    vertices.push(trunk[trunk.length-1].pos);
-    _32array = translate(vertices);
-    geo.addAttribute( 'position', new THREE.Float32BufferAttribute( _32array, 3 ) );
-    geo.computeVertexNormals();
-    branch = new THREE.Mesh(geo,material);
-    tree.push(branch);
+    for(i=0;i<l-2;i++){
+        for(s=0;s<seg;s++){
+            var v1 = i*seg+s;
+            var v2 = i*seg+(s+1)%seg;
+            var v3 = (i+1)*seg+(s+1)%seg;
+            var v4 = (i+1)*seg+s;
+
+            geo.faces.push(new THREE.Face3(v1,v2,v3));
+            geo.faceVertexUvs[0].push([new THREE.Vector2(s/seg,0),new THREE.Vector2((s+1)/seg,0),new THREE.Vector2((s+1)/seg,1)]);
+            geo.faces.push(new THREE.Face3(v3,v4,v1));
+            geo.faceVertexUvs[0].push([new THREE.Vector2((s+1)/seg,1),new THREE.Vector2((s)/seg,1),new THREE.Vector2((s)/seg,0)]);
+        }
+    }
+
+    var branch = new THREE.Mesh(geo,material);
+    branch.updateMatrix();
+    branchesgeo.merge(branch.geometry,branch.matrix);
+
+
+    //BufferGeometry
+    // vertices.push(trunk[trunk.length-1].pos);
+    // _32array = translate(vertices);
+    // geo.addAttribute( 'position', new THREE.Float32BufferAttribute( _32array, 3 ) );
+    // geo.computeVertexNormals();
+    // branch = new THREE.Mesh(geo,material);
+    // tree.push(branch);
 }
 
 //点集转换为32Array
 function translate(vertices){
-    var precision =5;
+    var precision = 3;
     var _32array = [];
     for(var i=0;i<vertices.length;i++){
         if((i+1) %5 === 0 && i + 1 !== vertices.length-1){

@@ -47,6 +47,24 @@ public class IndexController {
         return "index";
     }
 
+    @RequestMapping(value = "/obj", method = RequestMethod.POST)
+    public String obj(@RequestBody String fileString) {
+        tree1 = new ArrayList<>();
+        readObj(fileString, tree1);
+        trees.add(tree1);
+        return "index";
+    }
+
+    private static void readObj(String txt1, List<List<List<Node>>> tree1){
+        String content = txt1;
+        content = content.replaceAll("\r", "");
+        List<List<Node>> layer = new ArrayList<>();
+        System.out.println(content);
+        for(int i = 0;i<content.length();i++){
+
+        }
+    }
+
     public List<List<List<Node>>> copy(List<List<List<Node>>> tree){
         List<List<List<Node>>> copyTree = new ArrayList<>();
         List<List<Node>> layer = new ArrayList<>();

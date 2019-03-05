@@ -76,31 +76,51 @@
             alert("不能空")
         }
         var files = $('#fileId').prop('files'); //获取到文件列表
-        console.log(files.length);
         if(files.length == 0) {
             alert('请选择文件');
         } else {
             for(var i = 0; f = files[i]; i++) {
                 var reader = new FileReader(); //新建一个FileReader
                 reader.readAsText(files[i], "UTF-8"); //读取文件
-                reader.onload = function(evt) { //读取完文件之后会回来这里
-                    var fileString = evt.target.result; // 读取文件内容
-                    console.log(fileString);
-                    //showBaseTree(fileString);
-                    showObjTree(fileString);
-                    // $.ajax({
-                    //     url:'data',
-                    //     method:'post',
-                    //     data: fileString,
-                    //     contentType:"text/html;charset=utf-8",
-                    //     success:function(result){
-                    //         if(result != null) {
-                    //             alert("上传成功！");
-                    //         }
-                    //     },
-                    //     error:function (data) {
-                    //     }
-                    // });
+                if(f.name.substr(f.name.length-3)==="obj"){
+                    reader.onload = function(evt) { //读取完文件之后会回来这里
+                        var fileString = evt.target.result; // 读取文件内容
+                        console.log(fileString);
+                        showObjTree(fileString);
+                        $.ajax({
+                            url:'obj',
+                            method:'post',
+                            data: fileString,
+                            contentType:"text/html;charset=utf-8",
+                            success:function(result){
+                                if(result != null) {
+                                    alert("上传成功！");
+                                }
+                            },
+                            error:function (data) {
+                            }
+                        });
+                    };
+                }
+                else if(f.name.substr(f.name.length-3)==="skl"){
+                    reader.onload = function(evt) { //读取完文件之后会回来这里
+                        var fileString = evt.target.result; // 读取文件内容
+                        console.log(fileString);
+                        showBaseTree(fileString);
+                        $.ajax({
+                            url:'data',
+                            method:'post',
+                            data: fileString,
+                            contentType:"text/html;charset=utf-8",
+                            success:function(result){
+                                if(result != null) {
+                                    alert("上传成功！");
+                                }
+                            },
+                            error:function (data) {
+                            }
+                        });
+                    }
                 }
             }
         }
