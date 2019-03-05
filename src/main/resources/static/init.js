@@ -47,7 +47,7 @@ function init() {
     initScene();
     initObject();
     newtreecircle(message);
-    console.log(message);
+    console.log(forest.length);
     //smallMap();
     animate();
 }
