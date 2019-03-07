@@ -106,7 +106,7 @@ var planepos = 0;
 var geo = new THREE.Geometry();
 function drawBlendBranch(trunk) {
 
-    var seg = 5;
+    var seg = 3;
     var vertices = [];
     var _32array = [];
     geo = new THREE.Geometry();

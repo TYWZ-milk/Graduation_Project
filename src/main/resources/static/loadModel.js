@@ -6,6 +6,7 @@ var LevelDefine = [0,4000000,5000000,6000000,7000000,8000000,9000000,10000000,15
 var LeavesLevelDefine = [0,10000,250000,1000000];
 var instanceBranchSet = [];
 var branch;
+var lod;
 //初始化树木
 function initObject(){
     //枝干和叶子的模型
@@ -203,12 +204,9 @@ var branchesgeo = new THREE.Geometry();
 function None(element, index, array){
     return !isNaN(element);
 }
-function drawBranch(trunk) {
 
-    var seg = 3 ;
-    var vertices = [];
-    var _32array = [];
-    geo = new THREE.Geometry();
+function multiGeo(trunk,seg) {
+    var geo = new THREE.Geometry();
     for (var i = 0, l = trunk.length; i < l - 1; i++) {
         var circle = trunk[i];
         for (var s = 0; s < seg; s++) {//for each point in the circle
@@ -256,7 +254,29 @@ function drawBranch(trunk) {
             geo.faceVertexUvs[0].push([new THREE.Vector2((s+1)/seg,1),new THREE.Vector2((s)/seg,1),new THREE.Vector2((s)/seg,0)]);
         }
     }
+    return geo;
+}
 
+function drawBranch(trunk) {
+    // geo = [
+    //     [ multiGeo(trunk,3), 50 ],
+    //     [ multiGeo(trunk,2), 100 ],
+    //     [ multiGeo(trunk,1), 800 ]
+    // ];
+    // lod = new THREE.LOD();
+    // for ( var i = 0; i < geo.length; i ++ ) {
+    //     branch = new THREE.Mesh( geo[ i ][ 0 ], material );
+    //     branch.updateMatrix();
+    //     branch.matrixAutoUpdate = false;
+    //     lod.addLevel( branch, geo[ i ][ 1 ] );
+    // }
+    // lod.position.x = 10000 * ( 0.5 - Math.random() );
+    // lod.position.y = 7500 * ( 0.5 - Math.random() );
+    // lod.position.z = 10000 * ( 0.5 - Math.random() );
+    // lod.updateMatrix();
+    // lod.matrixAutoUpdate = false;
+    // scene.add( lod );
+    geo = multiGeo(trunk,3);
     var branch = new THREE.Mesh(geo,material);
     branch.updateMatrix();
     branchesgeo.merge(branch.geometry,branch.matrix);

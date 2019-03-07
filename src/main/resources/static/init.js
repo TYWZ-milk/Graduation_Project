@@ -8,7 +8,8 @@ var leaves = [];
 
 function init() {
 
-    lbbs = new LBBs();
+    // lbbs = new LBBs();
+    THREE.Cache.clear();
     var canvas = document.getElementById("canvas");
     var width = window.innerWidth;
     var height = window.innerHeight;
@@ -234,6 +235,12 @@ function animate() {
     renderer.clear();
     renderer.render(scene,camera);
     stats.end();
-    lbbs.update();
+    // lbbs.update();
+    // scene.traverse( function ( object ) {
+    //     if ( object instanceof THREE.LOD ) {
+    //         object.update( camera );
+    //         console.log("sda");
+    //     }
+    // } );
     requestAnimationFrame(animate);
 }
