@@ -134,7 +134,7 @@ function newtreecircle(content){
         }
         draw(treecircle);
 
-        for(var cl = 0 ;cl<49;cl++) {
+        for(var cl = 0 ;cl<99;cl++) {
             //实例化
             // instance(shader_material);
 
@@ -153,12 +153,16 @@ function newtreecircle(content){
             // planepos+=30 * Math.floor(Math.random() * 6 + 1);
 
             //geometry版本的克隆
+            var randomsize = Math.random() * 10 + 3;
+            var rotation = Math.random()*Math.PI*4;
             var temp = [];
             for (var seq = 0; seq < tree.length; seq++) {
                 temp.push(tree[seq].clone());
                 temp[seq].position.x -=tree[0].position.x;
                 temp[seq].position.y -=tree[0].position.y;
                 temp[seq].position.z -=tree[0].position.z;
+                temp[seq].scale.set(randomsize,randomsize,randomsize);
+                temp[seq].rotation.set(0,rotation,0);
             }
             forest.push(temp);
             moveTree(temp);
@@ -180,6 +184,7 @@ function draw(treecircle){
     //branches为一棵树所有枝干merge后的
     var branches = new THREE.Mesh(branchesgeo,material);
     var randomsize = Math.random() * 10 + 3;
+    var rotation = Math.random()*Math.PI*4;
     // branch.scale.set(randomy/randomsize,randomy,randomy/randomsize);
     // leaves.scale.set(randomy/randomsize,randomy,randomy/randomsize);
     tree.push(branches);
@@ -187,9 +192,11 @@ function draw(treecircle){
     tree[0].maintrunk = true;
     tree[0].childs = [];
     tree[0].scale.set(randomsize,randomsize,randomsize);
+    tree[0].rotation.y+=rotation;
     for(var i = 1;i<tree.length;i++){
         tree[0].childs.push(tree[i]);
         tree[i].scale.set(randomsize,randomsize,randomsize);
+        tree[i].rotation.set(0,rotation,0);
     }
     moveTree(tree);
     planepos+=30 * Math.floor(Math.random() * 18 + 1);

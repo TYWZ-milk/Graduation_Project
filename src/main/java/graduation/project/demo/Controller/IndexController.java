@@ -100,8 +100,9 @@ public class IndexController {
                 tree2 = copy(trees.get(seq+1));
             addZero(tree1, tree2);
             List<List<List<Node>>> midTree = new ArrayList<>();
+            blendtree = new ArrayList<>();
             for (int total = 0; total < forestSize; total++) {
-                List<List<List<Node>>> temp = new ArrayList<>(blendtree);
+                List<List<List<Node>>>  temp = new ArrayList<>(blendtree);
                 if(total==forestSize/2) {
                     temp = new ArrayList<>(midTree);
                     Collections.reverse(documents);
@@ -299,18 +300,20 @@ public class IndexController {
         ptree1.addAll(tree1);
         ptree2.addAll(tree2);
         if(ptree2.size()!=ptree1.size()){
-            if(ptree2.size() > ptree1.size() && ((ArrayList) ptree2.get( ptree2.size()-2)).size() < ((ArrayList) ptree1.get( ptree1.size()-1)).size()){
-                int interval = ((ArrayList) ptree1.get( ptree1.size()-1)).size()/((ArrayList) ptree2.get( ptree2.size()-2)).size();
-                for(var i=0;i<((ArrayList) ptree2.get( ptree2.size()-1)).size();i++){
-                    Node temp = (Node) ((ArrayList) ptree2.get(ptree2.size()-1)).get(i);
-                    temp.child*=interval;
+            if(ptree2.size() > ptree1.size() && ptree2.get( ptree2.size()-2).size() < ptree1.get( ptree1.size()-1).size()){
+                int interval = ptree1.get( ptree1.size()-1).size()/ ptree2.get( ptree2.size()-2).size();
+                for(var i = 0; i< ptree2.get( ptree2.size()-1).size(); i++){
+                    for(var j=0;j<((ArrayList)((ArrayList) ptree2.get(ptree2.size()-1)).get(i)).size();j++) {
+                        Node temp = (Node) ((ArrayList)((ArrayList) ptree2.get(ptree2.size()-1)).get(i)).get(j);
+                        temp.child *= interval;
+                    }
                 }
             }
-            if(ptree2.size() < ptree1.size() && ((ArrayList) ptree1.get( ptree1.size()-2)).size() <  ((ArrayList) ptree2.get( ptree2.size()-1)).size()){
-                int interval = ((ArrayList) ptree2.get( ptree2.size()-1)).size()/((ArrayList) ptree1.get( ptree1.size()-2)).size();
-                for(var i=0;i<((ArrayList) ptree1.get( ptree1.size()-1)).size();i++){
-                    for(var j=0;j<((ArrayList)((ArrayList) ptree1.get(ptree1.size()-1)).get(0)).size();j++) {
-                        Node temp = (Node) ((ArrayList)((ArrayList) ptree2.get(ptree2.size()-1)).get(i)).get(j);
+            if(ptree2.size() < ptree1.size() && ptree1.get( ptree1.size()-2).size() <  ptree2.get( ptree2.size()-1).size()){
+                int interval = ptree2.get( ptree2.size()-1).size()/ ptree1.get( ptree1.size()-2).size();
+                for(var i = 0; i< ptree1.get( ptree1.size()-1).size(); i++){
+                    for(var j=0;j<((ArrayList)((ArrayList) ptree1.get(ptree1.size()-1)).get(i)).size();j++) {
+                        Node temp = (Node) ((ArrayList)((ArrayList) ptree1.get(ptree1.size()-1)).get(i)).get(j);
                         temp.child *= interval;
                     }
                 }
