@@ -188,6 +188,7 @@ function initGui(){
 function initScene() {
     scene.add(loadGround());
     scene.add(loadSky());
+    loadGrass();
 }
 
 //回字形轨道
