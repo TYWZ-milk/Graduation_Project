@@ -63,11 +63,17 @@ function generateHeight( width, height ) {
     return data;
 
 }
-function loadGrass() {
-    var grassImg = new THREE.ImageUtils.loadTexture("../textures/tree/grass1.png");
+var grasses = [];
+
+function loadFlower(flower) {
+    if(flower===1)
+        var grassImg = new THREE.ImageUtils.loadTexture("../textures/tree/flower1.png");
+    else if (flower===2)
+        var grassImg = new THREE.ImageUtils.loadTexture("../textures/tree/flower2.png");
+    else
+        var grassImg = new THREE.ImageUtils.loadTexture("../textures/tree/flower3.png");
     var grassMat = new THREE.MeshLambertMaterial({
         map:grassImg,
-        color:0x253F08,
         side:THREE.DoubleSide,
         transparent:true
     });
@@ -85,6 +91,42 @@ function loadGrass() {
             var rotation = Math.random()*Math.PI*4;
             grassMesh.rotation.set(0,rotation,0);
             scene.add(grassMesh);
+            grasses.push(grassMesh);
+            if(i%10!==0)
+                pos += 3;
+            else
+                pos+=3*250;
+        }
+        pos+=300 * Math.floor(Math.random() * 12 + 1);
+    }
+}
+function loadGrass(grasss) {
+    if(grasss===1)
+        var grassImg = new THREE.ImageUtils.loadTexture("../textures/tree/grass1.png");
+    else if (grasss===2)
+        var grassImg = new THREE.ImageUtils.loadTexture("../textures/tree/grass2.png");
+    else
+        var grassImg = new THREE.ImageUtils.loadTexture("../textures/tree/grass3.png");
+    var grassMat = new THREE.MeshLambertMaterial({
+        map:grassImg,
+        side:THREE.DoubleSide,
+        transparent:true
+    });
+    var leaf_size = 100;
+    var geo = new THREE.PlaneGeometry(leaf_size*2,leaf_size);
+    var grass = new THREE.Mesh(geo,grassMat);
+    grass.geometry.translate(0,leaf_size/2.0,0);
+    var pos = 30;
+    for(var j = 0;j<20;j++) {
+        for (var i = 0; i < 50; i++) {
+            var grassMesh = grass.clone();
+            grassMesh.position.x += planevertices[pos];
+            grassMesh.position.z += planevertices[pos + 2];
+            grassMesh.position.y += planevertices[pos + 1];
+            var rotation = Math.random()*Math.PI*4;
+            grassMesh.rotation.set(0,rotation,0);
+            scene.add(grassMesh);
+            grasses.push(grassMesh);
             if(i%10!==0)
                 pos += 3;
             else

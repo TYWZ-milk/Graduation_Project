@@ -44,7 +44,7 @@ function init() {
     THREE.Cache.clear();
 
     initStats();
-    //initGui();
+    initGui();
     initScene();
     initObject();
     newtreecircle(message);
@@ -132,35 +132,42 @@ var browse = false;
 var controls = new function (){
 
     //树木种类
-    this.AL06a = false;
-    this.Blue_Spruce = false;
-    this.BS07a = false;
+    this.flower1 = false;
+    this.flower2 = false;
+    this.flower3 = false;
+    this.grass1 = false;
+    this.grass2 = false;
+    this.grass3 = false;
 
     //初始树木量
     this.TreeNumber = 100;
 
     //清空画面
-    this.Delete = function(){
-        for(var i=0 ; i <forest.length;i++){
-            for(var j = 0;j<forest[i].length;j++) {
-                scene.remove(forest[i][j]);
-            }
+    this.Clean = function(){
+        for(var i=0 ; i <grasses.length;i++){
+            scene.remove(grasses[i]);
         }
     };
 
     //树木合成
-    this.Blend = function (){
-        if(this.AL06a === true && this.Blue_Spruce === true){
-            THREE.Cache.clear();
-            initObject("AL06a","Blue Spruce",this.TreeNumber);
+    this.Build = function (){
+        if(this.flower1===true){
+            loadFlower(1);
         }
-        else if(this.AL06a === true && this.BS07a === true){
-            THREE.Cache.clear();
-            initObject("AL06a","BS07a",this.TreeNumber);
+        if(this.flower2===true){
+            loadFlower(2);
         }
-        else if(this.Blue_Spruce === true && this.BS07a === true){
-            THREE.Cache.clear();
-            initObject("Blue Spruce","BS07a",this.TreeNumber);
+        if(this.flower3===true){
+            loadFlower(3);
+        }
+        if(this.grass1===true){
+            loadGrass(1)
+        }
+        if(this.grass2===true){
+            loadGrass(2);
+        }
+        if(this.grass3===true){
+            loadGrass(3)
         }
     };
 
@@ -175,20 +182,25 @@ var controls = new function (){
 //控制界面
 function initGui(){
     var dataGui = new dat.GUI();
-    dataGui.add(controls,'AL06a');
-    dataGui.add(controls,'Blue_Spruce');
-    dataGui.add(controls,'BS07a');
-    dataGui.add(controls,'Blend');
-    dataGui.add(controls,"TreeNumber",50,15000).step(50);
+    var grassFolder = dataGui.addFolder( '草坪' );
+    var flowerFolder = dataGui.addFolder( '花丛' );
+
+    flowerFolder.add(controls,'flower1');
+    flowerFolder.add(controls,'flower2');
+    flowerFolder.add(controls,'flower3');
+    grassFolder.add(controls,'grass1');
+    grassFolder.add(controls,'grass2');
+    grassFolder.add(controls,'grass3');
+    dataGui.add(controls,'Build');
+    // dataGui.add(controls,"TreeNumber",50,15000).step(50);
     //dataGui.add(controls, "Orbit");
-    dataGui.add(controls,'Delete');
+    dataGui.add(controls,'Clean');
 }
 
 //初始化场景
 function initScene() {
     scene.add(loadGround());
     scene.add(loadSky());
-    loadGrass();
 }
 
 //回字形轨道
