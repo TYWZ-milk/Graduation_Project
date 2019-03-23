@@ -134,7 +134,6 @@ var controls = new function (){
     //树木种类
     this.flower1 = false;
     this.flower2 = false;
-    this.flower3 = false;
     this.grass1 = false;
     this.grass2 = false;
     this.grass3 = false;
@@ -157,9 +156,7 @@ var controls = new function (){
         if(this.flower2===true){
             loadFlower(2);
         }
-        if(this.flower3===true){
-            loadFlower(3);
-        }
+
         if(this.grass1===true){
             loadGrass(1)
         }
@@ -187,7 +184,6 @@ function initGui(){
 
     flowerFolder.add(controls,'flower1');
     flowerFolder.add(controls,'flower2');
-    flowerFolder.add(controls,'flower3');
     grassFolder.add(controls,'grass1');
     grassFolder.add(controls,'grass2');
     grassFolder.add(controls,'grass3');
