@@ -134,7 +134,7 @@ function newtreecircle(content){
         }
         draw(treecircle);
 
-        for(var cl = 0 ;cl<99;cl++) {
+        for(var cl = 0 ;cl<199;cl++) {
             //实例化
             // instance(shader_material);
 
