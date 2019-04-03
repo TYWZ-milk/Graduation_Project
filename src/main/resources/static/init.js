@@ -236,6 +236,11 @@ function animate() {
         forestupdate();
         update = 0;
     }
+
+    //billboard
+    for(var i =0;i<grasses.length;i++){
+        grasses[i].quaternion.copy(camera.quaternion);
+    }
     //leavesupdate();
 
     //浏览轨道控制
@@ -256,4 +261,5 @@ function animate() {
     //     }
     // } );
     requestAnimationFrame(animate);
+    annie.update(1000 * delta);
 }

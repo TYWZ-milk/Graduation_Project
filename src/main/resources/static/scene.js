@@ -64,20 +64,20 @@ function generateHeight( width, height ) {
 
 }
 var grasses = [];
-
+var annie;
 function loadFlower(flower) {
     if(flower===1)
-        var grassImg = new THREE.ImageUtils.loadTexture("../textures/tree/flower1.png");
+        var grassImg = new THREE.ImageUtils.loadTexture("../textures/tree/gif.png");
     else if (flower===2)
         var grassImg = new THREE.ImageUtils.loadTexture("../textures/tree/flower2.png");
     else
         var grassImg = new THREE.ImageUtils.loadTexture("../textures/tree/flower3.png");
     var grassMat = new THREE.MeshLambertMaterial({
         map:grassImg,
-        side:THREE.DoubleSide,
         transparent:true
     });
-    var leaf_size = 200;
+    annie = new TextureAnimator( grassImg, 10, 1, 10, 3000 ); // texture, #horiz, #vert, #total, duration.
+    var leaf_size = 20;
     var geo = new THREE.PlaneGeometry(leaf_size,leaf_size);
     var grass = new THREE.Mesh(geo,grassMat);
     grass.geometry.translate(0,leaf_size/2.0,0);
@@ -89,6 +89,8 @@ function loadFlower(flower) {
             grassMesh.position.z += planevertices[pos + 2];
             grassMesh.position.y += planevertices[pos + 1];
             var rotation = Math.random()*Math.PI*4;
+            var randomsize = Math.random() * 8 + 1;
+            grassMesh.scale.set(randomsize,randomsize,randomsize);
             grassMesh.rotation.set(0,rotation,0);
             scene.add(grassMesh);
             grasses.push(grassMesh);
@@ -100,6 +102,42 @@ function loadFlower(flower) {
         pos+=300 * Math.floor(Math.random() * 12 + 1);
     }
 }
+function TextureAnimator(texture, tilesHoriz, tilesVert, numTiles, tileDispDuration)
+{
+    // note: texture passed by reference, will be updated by the update function.
+
+    this.tilesHorizontal = tilesHoriz;
+    this.tilesVertical = tilesVert;
+    // how many images does this spritesheet contain?
+    //  usually equals tilesHoriz * tilesVert, but not necessarily,
+    //  if there at blank tiles at the bottom of the spritesheet.
+    this.numberOfTiles = numTiles;
+    texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+    texture.repeat.set( 1 / this.tilesHorizontal, 1 / this.tilesVertical );
+    // how long should each image be displayed?
+    this.tileDisplayDuration = tileDispDuration;
+    // how long has the current image been displayed?
+    this.currentDisplayTime = 0;
+    // which image is currently being displayed?
+    this.currentTile = 0;
+
+    this.update = function( milliSec )
+    {
+        this.currentDisplayTime += milliSec;
+        while (this.currentDisplayTime > this.tileDisplayDuration)
+        {
+            this.currentDisplayTime -= this.tileDisplayDuration;
+            this.currentTile++;
+            if (this.currentTile == this.numberOfTiles)
+                this.currentTile = 0;
+            var currentColumn = this.currentTile % this.tilesHorizontal;
+            texture.offset.x = currentColumn / this.tilesHorizontal;
+            var currentRow = Math.floor( this.currentTile / this.tilesHorizontal );
+            texture.offset.y = currentRow / this.tilesVertical;
+        }
+    };
+}
+
 function loadGrass(grasss) {
     if(grasss===1)
         var grassImg = new THREE.ImageUtils.loadTexture("../textures/tree/grass1.png");
@@ -109,7 +147,6 @@ function loadGrass(grasss) {
         var grassImg = new THREE.ImageUtils.loadTexture("../textures/tree/grass3.png");
     var grassMat = new THREE.MeshLambertMaterial({
         map:grassImg,
-        side:THREE.DoubleSide,
         transparent:true
     });
     var leaf_size = 100;
