@@ -31,7 +31,7 @@ function init() {
     light = new THREE.AmbientLight(0xffffff,1);
     scene.add(light);
 
-    camera = new THREE.PerspectiveCamera(45,width/height,1,100000);
+    camera = new THREE.PerspectiveCamera(45,width/height,1,15000);
     camera.position.y = 3000;
     camera.position.z = 1000;
     camera.lookAt(0,0,0);
@@ -48,7 +48,6 @@ function init() {
     initScene();
     initObject();
     newtreecircle(message);
-    console.log(forest.length);
     //smallMap();
     animate();
 }
@@ -236,7 +235,7 @@ function animate() {
         forestupdate();
         update = 0;
     }
-
+    //FOI();
     //billboard
     for(var i =0;i<grasses.length;i++){
         grasses[i].quaternion.copy(camera.quaternion);
@@ -244,9 +243,9 @@ function animate() {
     //leavesupdate();
 
     //浏览轨道控制
-    var delta = clock.getDelta();
-    orbit();
-    Trackcontrols.update(delta);
+    // var delta = clock.getDelta();
+    // orbit();
+    // Trackcontrols.update(delta);
 
     //实时渲染
     stats.begin();
@@ -261,5 +260,6 @@ function animate() {
     //     }
     // } );
     requestAnimationFrame(animate);
-    annie.update(1000 * delta);
+    if(annie!=null)
+        annie.update(1000 * delta);
 }

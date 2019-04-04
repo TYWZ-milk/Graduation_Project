@@ -13,7 +13,7 @@ function initObject(){
     branchImg = new THREE.ImageUtils.loadTexture("../textures/tree/diffuse-min.png");
     material = new THREE.MeshLambertMaterial({
         // wireframe:true,
-        side:THREE.DoubleSide,
+
         map:branchImg
     });
 
@@ -189,12 +189,7 @@ function draw(treecircle){
     // leaves.scale.set(randomy/randomsize,randomy,randomy/randomsize);
     tree.push(branches);
 
-    tree[0].maintrunk = true;
-    tree[0].childs = [];
-    tree[0].scale.set(randomsize,randomsize,randomsize);
-    tree[0].rotation.y+=rotation;
-    for(var i = 1;i<tree.length;i++){
-        tree[0].childs.push(tree[i]);
+    for(var i = 0;i<tree.length;i++){
         tree[i].scale.set(randomsize,randomsize,randomsize);
         tree[i].rotation.set(0,rotation,0);
     }
@@ -343,7 +338,7 @@ var leaves;
 function addLeaf(trunk){
     leafgeo = new THREE.Geometry();
     for(var i = 1;i<trunk.length;i++) {
-        for(var j = Math.floor(trunk[i].length/2+Math.floor(Math.random()*4 + 1));j<trunk[i].length;j+=Math.floor(Math.random()*3 + 1)) {
+        for(var j = Math.floor(trunk[i].length/2+Math.floor(Math.random()*5 + 1));j<trunk[i].length;j+=Math.floor(Math.random()*4 + 1)) {
             for (var k = Math.floor(Math.random() * 6 + 1); k < 4; k++) {
                 var leaf = leafMesh.clone();
                 var phi = Math.random()*60+20;

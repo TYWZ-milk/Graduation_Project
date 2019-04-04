@@ -25,11 +25,10 @@ function forestupdate(){
                 if (dist > LevelDefine[i]) le++;
                 else break;
             }
-            //if(j>2) {
+
             forest[j][0].visible = (j % le === 0);
-            if (z > 1)
+            if (z<0.9998  && z> 0.9997)
                 forest[j][0].visible = false;
-            //}
             //对叶子采取同样的操作
             if (forest[j][0].visible === false) {
                 for (var i = 0; i < forest[j].length; i++) {
@@ -52,21 +51,22 @@ function forestupdate(){
 }
 
 //FOI通过z值大小判断树木是否在画面内
-//function FOI(){
-//    var cameraMatrix = new THREE.Matrix4().multiplyMatrices(camera.projectionMatrix,camera.matrixWorldInverse);
-//    for(var j=0,jl=forest.length;j<jl;j++) {
-//        var point = new THREE.Vector3(forest[j][0].position.x,forest[j][0].position.y,forest[j][0].position.z);
-//        var z = point.applyMatrix4(cameraMatrix).z;
-//        if(z>1) {
-//            forest[j][0].visibale = false;
-//            for(var i = 0;i<forest[j].length;i++){
-//                forest[j][i].visible = false;
-//            }
-//        }
-//        else if(forest[j][0].visibale == true){
-//            for(var i = 0;i<forest[j].length;i++){
-//                forest[j][i].visible = true;
-//            }
-//        }
-//    }
-//}
+function FOI(){
+   var cameraMatrix = new THREE.Matrix4().multiplyMatrices(camera.projectionMatrix,camera.matrixWorldInverse);
+   for(var j=0,jl=forest.length;j<jl;j++) {
+       var point = new THREE.Vector3(forest[j][0].position.x,forest[j][0].position.y,forest[j][0].position.z);
+       var z = point.applyMatrix4(cameraMatrix).z;
+       console.log(z);
+       if(z<0.9998  && z> 0.9997) {
+           forest[j][0].visibale = false;
+           for(var i = 0;i<forest[j].length;i++){
+               forest[j][i].visible = false;
+           }
+       }
+       else{
+           for (var i = 0; i < forest[j].length; i++) {
+               forest[j][i].visible = true;
+           }
+       }
+   }
+}
