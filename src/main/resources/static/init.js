@@ -4,7 +4,6 @@
 // stats 控制面板 lbbs LBB.js渲染优化 forest 场景内所有树木 leaves 与leavesupdate()相关
 var scene,renderer,camera,Trackcontrols,stats,lbbs;
 var forest = [];
-var leaves = [];
 
 function init() {
 
@@ -48,10 +47,24 @@ function init() {
     initScene();
     initObject();
     newtreecircle(message);
+    clean();
     //smallMap();
     animate();
 }
-
+function clean() {
+    branchImg = null;
+    leafImg = null;
+    leafMat = null;
+    leafMesh = null;
+    branchesgeo = null;
+    branch = null;
+    instanceBranchSet = null;
+    material = null;
+    tree = null;
+    tree1 = null;
+    geo = null;
+    planepos = null;
+}
 //小地图
 function smallMap(){
 

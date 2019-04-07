@@ -3,7 +3,6 @@ var leafMat;
 var material;
 var leafMesh;
 var LevelDefine = [0,4000000,5000000,6000000,7000000,8000000,9000000,10000000,15000000,25000000];
-var LeavesLevelDefine = [0,10000,250000,1000000];
 var instanceBranchSet = [];
 var branch;
 var lod;
@@ -36,16 +35,16 @@ function instance(shader_material) {
     instancedGeo.index = bufferGeometry.index;
     instancedGeo.attributes = bufferGeometry.attributes;
 
-    var particleCount = 1;
-    var translateArray = new Float32Array( particleCount * 3 );
-
-    for ( var li = 0, i3 = 0, l = particleCount; li < l; li ++, i3 += 3 ) {
-        translateArray[ i3 + 0 ] = 0;
-        translateArray[ i3 + 1 ] = 0;
-        translateArray[ i3 + 2 ] = 0;
-    }
-
-    instancedGeo.addAttribute('translate', new THREE.InstancedBufferAttribute( translateArray, 3, 1 ) );
+    // var particleCount = 99;
+    // var translateArray = new Float32Array( particleCount * 3 );
+    //
+    // for ( var li = 0, i3 = 0, l = particleCount; li < l; li ++, i3 += 3 ) {
+    //     translateArray[ i3 + 0 ] = 10;
+    //     translateArray[ i3 + 1 ] = 10;
+    //     translateArray[ i3 + 2 ] = 10;
+    // }
+    //
+    // instancedGeo.addAttribute('translate', new THREE.InstancedBufferAttribute( translateArray, 3, 1 ) );
     var instancedTree = new THREE.Mesh( instancedGeo, shader_material );
     var randomsize = Math.random() * 10 + 3;
     instancedTree.scale.set(randomsize,randomsize,randomsize);
@@ -134,9 +133,9 @@ function newtreecircle(content){
         }
         draw(treecircle);
 
-        for(var cl = 0 ;cl<199;cl++) {
+        for(var cl = 0 ;cl<999;cl++) {
             //实例化
-            // instance(shader_material);
+            //instance(shader_material);
 
             // //buffer版本
             // var temp = [];
@@ -333,10 +332,9 @@ function drawTree(blendtree){
     }
 }
 //添加叶子，在圆环序列上随机添加叶子
-var leafgeo = new THREE.Geometry();
-var leaves;
+
 function addLeaf(trunk){
-    leafgeo = new THREE.Geometry();
+    var leafgeo = new THREE.Geometry();
     for(var i = 1;i<trunk.length;i++) {
         for(var j = Math.floor(trunk[i].length/2+Math.floor(Math.random()*5 + 1));j<trunk[i].length;j+=Math.floor(Math.random()*4 + 1)) {
             for (var k = Math.floor(Math.random() * 6 + 1); k < 4; k++) {
@@ -359,7 +357,7 @@ function addLeaf(trunk){
             }
         }
     }
-    leaves = new THREE.Mesh(leafgeo,leafMesh.material);
+    var leaves = new THREE.Mesh(leafgeo,leafMesh.material);
     tree.push(leaves);
 }
 //修改树木的位置
