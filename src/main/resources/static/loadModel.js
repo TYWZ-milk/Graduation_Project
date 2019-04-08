@@ -165,7 +165,12 @@ function newtreecircle(content){
             }
             forest.push(temp);
             moveTree(temp);
-            planepos+=30 * Math.floor(Math.random() * 12 + 1);
+            if(cl%10!==0)
+                planepos+=3;
+            else
+                planepos+=3*200;
+            if(cl%100===0)
+                planepos+=600 * Math.floor(Math.random() * 12 + 1);
         }
         tree = [];
         forestupdate();
@@ -193,7 +198,6 @@ function draw(treecircle){
         tree[i].rotation.set(0,rotation,0);
     }
     moveTree(tree);
-    planepos+=30 * Math.floor(Math.random() * 18 + 1);
     forest.push(tree);
 }
 //有buffer的老版本drawbranch，绘制每一个branch
@@ -361,7 +365,7 @@ function addLeaf(trunk){
     tree.push(leaves);
 }
 //修改树木的位置
-var planepos = 30;
+var planepos = 0;
 function moveTree(trees){
     for(var i=0; i <trees.length;i++){
         trees[i].position.x += planevertices[planepos];

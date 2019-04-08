@@ -30,7 +30,7 @@ function init() {
     light = new THREE.AmbientLight(0xffffff,1);
     scene.add(light);
 
-    camera = new THREE.PerspectiveCamera(45,width/height,1,15000);
+    camera = new THREE.PerspectiveCamera(45,width/height,1,18000);
     camera.position.y = 3000;
     camera.position.z = 1000;
     camera.lookAt(0,0,0);
