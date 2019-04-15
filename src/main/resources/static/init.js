@@ -4,7 +4,6 @@
 // stats 控制面板 lbbs LBB.js渲染优化 forest 场景内所有树木 leaves 与leavesupdate()相关
 var scene,renderer,camera,Trackcontrols,stats,lbbs;
 var forest = [];
-
 function init() {
 
     // lbbs = new LBBs();
@@ -41,6 +40,31 @@ function init() {
     Trackcontrols.lookVertical = true;
 
     THREE.Cache.clear();
+    var tgaLoader = new THREE.TGALoader();
+    var texture = tgaLoader.load('crop/aTextures/Vegetables_OP.tga', function () {
+    });
+    THREE.Loader.Handlers.add(/\.tga$/i, new THREE.TGALoader());
+    var mtlLoader = new THREE.MTLLoader();
+    mtlLoader.setPath('crop/');
+    var url = 'qiezie.mtl';
+    mtlLoader.load( url, function( materials ) {
+
+
+        materials.preload();
+        materials.materials = new THREE.MeshLambertMaterial({
+            // wireframe:true,
+
+            map:new THREE.ImageUtils.loadTexture("../textures/tree/diffuse-min.png")
+        });
+        var objLoader = new THREE.OBJLoader();
+        objLoader.setMaterials( materials );
+        objLoader.load( 'crop/qiezie.obj', function ( object ) {
+            object.position.y = - 95;
+            scene.add( object );
+
+        } );
+
+    });
 
     initStats();
     initGui();

@@ -62,7 +62,6 @@ function showObjTree(fileStr) {
             cir++;
 
     }
-    console.log(points.length);
     for(var j = 0;j <points.length;j++) {
         var cube = new THREE.Mesh(new THREE.CubeGeometry(3, 3, 3),
             new THREE.MeshBasicMaterial({

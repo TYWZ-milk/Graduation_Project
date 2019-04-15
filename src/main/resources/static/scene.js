@@ -150,12 +150,12 @@ function loadGrass(grasss) {
         transparent:true
     });
     var leaf_size = 100;
-    var geo = new THREE.PlaneGeometry(leaf_size*2,leaf_size);
+    var geo = new THREE.PlaneGeometry(leaf_size*6,leaf_size);
     var grass = new THREE.Mesh(geo,grassMat);
     grass.geometry.translate(0,leaf_size/2.0,0);
     var pos = 30;
-    for(var j = 0;j<20;j++) {
-        for (var i = 0; i < 50; i++) {
+    for(var j = 0;j<50;j++) {
+        for (var i = 0; i < 10; i++) {
             var grassMesh = grass.clone();
             grassMesh.position.x += planevertices[pos];
             grassMesh.position.z += planevertices[pos + 2];
@@ -164,7 +164,7 @@ function loadGrass(grasss) {
             grassMesh.rotation.set(0,rotation,0);
             scene.add(grassMesh);
             grasses.push(grassMesh);
-            if(i%10!==0)
+            if(i%2!==0)
                 pos += 3;
             else
                 pos+=3*250;
