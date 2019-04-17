@@ -3,13 +3,33 @@ var material;
 var branchesgeo = new THREE.Geometry();
 function result() {
     THREE.Cache.clear();
-    camera2 = new THREE.PerspectiveCamera(45,window.innerWidth / window.innerHeight,1,100000);
-    camera2.position.z = 700;
-    camera2.position.y = 90;
-    camera2.position.x = -800;
+    camera2 = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 5000 );
+    camera2.position.set( 100, 200, 300 );
     material = new THREE.MeshNormalMaterial();
 
     scene2 = new THREE.Scene();
+    scene2.background = new THREE.Color( 0xa0a0a0 );
+
+    var light = new THREE.HemisphereLight( 0xffffff, 0x444444 );
+    light.position.set( 0, 200, 0 );
+    scene2.add( light );
+    light = new THREE.DirectionalLight( 0xffffff );
+    light.position.set( 0, 200, 100 );
+    light.castShadow = true;
+    light.shadow.camera.top = 180;
+    light.shadow.camera.bottom = - 100;
+    light.shadow.camera.left = - 120;
+    light.shadow.camera.right = 120;
+    scene2.add( light );
+
+    var mesh = new THREE.Mesh( new THREE.PlaneBufferGeometry( 20000, 20000 ), new THREE.MeshPhongMaterial( { color: 0x999999, depthWrite: false } ) );
+    mesh.rotation.x = - Math.PI / 2;
+    mesh.receiveShadow = true;
+    scene2.add( mesh );
+    var grid = new THREE.GridHelper( 12000, 50, 0x000000, 0x000000 );
+    grid.material.opacity = 0.2;
+    grid.material.transparent = true;
+    scene2.add( grid );
 
     var canvas = document.getElementById("result");
     renderer2 = new THREE.WebGLRenderer({

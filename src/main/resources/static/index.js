@@ -6,13 +6,24 @@ var pos = 0;
 var branchesgeo = new THREE.Geometry();
 function init() {
     THREE.Cache.clear();
-    camera = new THREE.PerspectiveCamera(45,window.innerWidth / window.innerHeight,1,100000);
-    camera.position.z = 700;
-    camera.position.y = 90;
-    camera.position.x = -800;
-
+    camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 5000 );
+    camera.position.set( 100, 200, 300 );
 
     scene = new THREE.Scene();
+    scene.background = new THREE.Color( 0xa0a0a0 );
+    //scene.fog = new THREE.Fog( 0xa0a0a0, 200, 1000 );
+
+    var light = new THREE.HemisphereLight( 0xffffff, 0x444444 );
+    light.position.set( 0, 200, 0 );
+    scene.add( light );
+    light = new THREE.DirectionalLight( 0xffffff );
+    light.position.set( 0, 200, 100 );
+    light.castShadow = true;
+    light.shadow.camera.top = 180;
+    light.shadow.camera.bottom = - 100;
+    light.shadow.camera.left = - 120;
+    light.shadow.camera.right = 120;
+    scene.add( light );
 
     branchImg = new THREE.ImageUtils.loadTexture("../textures/tree/diffuse-min.png");
     material = new THREE.MeshNormalMaterial();
@@ -28,6 +39,43 @@ function init() {
     Trackcontrols.movementSpeed = 500;
     Trackcontrols.lookSpeed = 0.1;
     Trackcontrols.lookVertical = true;
+
+    var mesh = new THREE.Mesh( new THREE.PlaneBufferGeometry( 2000, 2000 ), new THREE.MeshPhongMaterial( { color: 0x999999, depthWrite: false } ) );
+    mesh.rotation.x = - Math.PI / 2;
+    mesh.receiveShadow = true;
+    scene.add( mesh );
+    var grid = new THREE.GridHelper( 2000, 20, 0x000000, 0x000000 );
+    grid.material.opacity = 0.2;
+    grid.material.transparent = true;
+    scene.add( grid );
+
+    // var tgaLoader = new THREE.TGALoader();
+    // var texture = tgaLoader.load('crop/aTextures/Vegetables_OP.tga', function () {
+    // });
+    // THREE.Loader.Handlers.add(/\.tga$/i, new THREE.TGALoader());
+    var mtlLoader = new THREE.MTLLoader();
+    mtlLoader.setPath('crop/');
+    var url = 'Aubergine.mtl';
+    mtlLoader.load( url, function( materials ) {
+
+
+        materials.preload();
+        // materials.materials = new THREE.MeshLambertMaterial({
+        //     // wireframe:true,
+        //
+        //     map:new THREE.ImageUtils.loadTexture("../textures/tree/diffuse-min.png")
+        // });
+        var objLoader = new THREE.OBJLoader();
+        objLoader.setMaterials( materials );
+        objLoader.load( 'crop/Aubergine.obj', function ( object ) {
+
+            object.scale.set(0.2,0.2,0.2);
+            object.position.set(0,0,0);
+            scene.add( object );
+
+        } );
+
+    });
 
     animate();
 }
