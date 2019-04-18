@@ -55,7 +55,7 @@ function init() {
     // THREE.Loader.Handlers.add(/\.tga$/i, new THREE.TGALoader());
     var mtlLoader = new THREE.MTLLoader();
     mtlLoader.setPath('crop/');
-    var url = 'Aubergine.mtl';
+    var url = 'Corn_lod2.mtl';
     mtlLoader.load( url, function( materials ) {
 
 
@@ -67,7 +67,7 @@ function init() {
         // });
         var objLoader = new THREE.OBJLoader();
         objLoader.setMaterials( materials );
-        objLoader.load( 'crop/Aubergine.obj', function ( object ) {
+        objLoader.load( 'crop/Corn_lod2.obj', function ( object ) {
 
             object.scale.set(0.2,0.2,0.2);
             object.position.set(0,0,0);
