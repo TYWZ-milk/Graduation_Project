@@ -65,7 +65,7 @@ function generateHeight( width, height ) {
 }
 var grasses = [];
 var annie;
-function loadFlower(flower) {
+function loadFlower(flower,number) {
     if(flower===1)
         var grassImg = new THREE.ImageUtils.loadTexture("../textures/tree/gif.png");
     else if (flower===2)
@@ -82,7 +82,7 @@ function loadFlower(flower) {
     var grass = new THREE.Mesh(geo,grassMat);
     grass.geometry.translate(0,leaf_size/2.0,0);
     var pos = 30;
-    for(var j = 0;j<20;j++) {
+    for(var j = 0;j<number/50;j++) {
         for (var i = 0; i < 50; i++) {
             var grassMesh = grass.clone();
             grassMesh.position.x += planevertices[pos];
@@ -138,7 +138,7 @@ function TextureAnimator(texture, tilesHoriz, tilesVert, numTiles, tileDispDurat
     };
 }
 
-function loadGrass(grasss) {
+function loadGrass(grasss,number) {
     if(grasss===1)
         var grassImg = new THREE.ImageUtils.loadTexture("../textures/tree/grass1.png");
     else if (grasss===2)
@@ -154,7 +154,7 @@ function loadGrass(grasss) {
     var grass = new THREE.Mesh(geo,grassMat);
     grass.geometry.translate(0,leaf_size/2.0,0);
     var pos = 30;
-    for(var j = 0;j<50;j++) {
+    for(var j = 0;j<number/10;j++) {
         for (var i = 0; i < 10; i++) {
             var grassMesh = grass.clone();
             grassMesh.position.x += planevertices[pos];
@@ -171,4 +171,119 @@ function loadGrass(grasss) {
         }
         pos+=300 * Math.floor(Math.random() * 12 + 1);
     }
+}
+
+function cropClone(object,scale,number) {
+    var pos = 30;
+    for(var j = 0;j<number/20;j++) {
+        for (var i = 0; i < 20; i++) {
+            var grassMesh = object.clone();
+            grassMesh.position.x += planevertices[pos];
+            grassMesh.position.z += planevertices[pos + 2];
+            grassMesh.position.y += planevertices[pos + 1];
+            var rotation = Math.random()*Math.PI*4;
+            grassMesh.rotation.set(0,rotation*i,0);
+            var scaleR = Math.random();
+            grassMesh.scale.set(scaleR*scale,scaleR *scale,scaleR * scale);
+            scene.add(grassMesh);
+            grasses.push(grassMesh);
+            pos += 3;
+        }
+        pos+=3 * 236;
+    }
+}
+
+function loadCrop(crop,number) {
+    if(crop===1) {
+        var mtlLoader = new THREE.MTLLoader();
+        mtlLoader.setPath('crop/');
+        var url = 'carrot.mtl';
+        mtlLoader.load( url, function( materials ) {
+            materials.preload();
+            var objLoader = new THREE.OBJLoader();
+            objLoader.setMaterials( materials );
+            objLoader.load( 'crop/carrot.obj', function ( object ) {
+                cropClone(object,0.08,number);
+            } );
+        });
+    }
+    else if (crop===2){
+        var mtlLoader = new THREE.MTLLoader();
+        mtlLoader.setPath('crop/');
+        var url = 'ChiliLg_lod0_High.mtl';
+        mtlLoader.load( url, function( materials ) {
+            materials.preload();
+            var objLoader = new THREE.OBJLoader();
+            objLoader.setMaterials( materials );
+            objLoader.load( 'crop/ChiliLg_lod0_High.obj', function ( object ) {
+                cropClone(object,0.08,number);
+            } );
+        });
+    }
+    else if(crop === 3){
+        var mtlLoader = new THREE.MTLLoader();
+        mtlLoader.setPath('crop/');
+        var url = 'Corn_lod2.mtl';
+        mtlLoader.load( url, function( materials ) {
+            materials.preload();
+            var objLoader = new THREE.OBJLoader();
+            objLoader.setMaterials( materials );
+            objLoader.load( 'crop/Corn_lod2.obj', function ( object ) {
+                cropClone(object,0.08,number);
+            } );
+        });
+    }
+    else if(crop === 4){
+        var mtlLoader = new THREE.MTLLoader();
+        mtlLoader.setPath('crop/');
+        var url = 'Cucmber_lod2.mtl';
+        mtlLoader.load( url, function( materials ) {
+            materials.preload();
+            var objLoader = new THREE.OBJLoader();
+            objLoader.setMaterials( materials );
+            objLoader.load( 'crop/Cucmber_lod2.obj', function ( object ) {
+                cropClone(object,0.08,number);
+            } );
+        });
+    }
+    else if(crop === 5){
+        var mtlLoader = new THREE.MTLLoader();
+        mtlLoader.setPath('crop/');
+        var url = 'Onion_lod0_High.mtl';
+        mtlLoader.load( url, function( materials ) {
+            materials.preload();
+            var objLoader = new THREE.OBJLoader();
+            objLoader.setMaterials( materials );
+            objLoader.load( 'crop/Onion_lod0_High.obj', function ( object ) {
+                cropClone(object,0.08,number);
+            } );
+        });
+    }
+    else if(crop === 6){
+        var mtlLoader = new THREE.MTLLoader();
+        mtlLoader.setPath('crop/');
+        var url = 'ground_patch.mtl';
+        mtlLoader.load( url, function( materials ) {
+            materials.preload();
+            var objLoader = new THREE.OBJLoader();
+            objLoader.setMaterials( materials );
+            objLoader.load( 'crop/ground_patch.obj', function ( object ) {
+                cropClone(object,0.2,number);
+            } );
+        });
+    }
+    else if(crop === 7){
+        var mtlLoader = new THREE.MTLLoader();
+        mtlLoader.setPath('crop/');
+        var url = 'Aubergine2_lod1.mtl';
+        mtlLoader.load( url, function( materials ) {
+            materials.preload();
+            var objLoader = new THREE.OBJLoader();
+            objLoader.setMaterials( materials );
+            objLoader.load( 'crop/Aubergine2_lod1.obj', function ( object ) {
+                cropClone(object,0.08,number);
+            } );
+        });
+    }
+
 }

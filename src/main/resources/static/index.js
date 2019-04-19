@@ -49,34 +49,6 @@ function init() {
     grid.material.transparent = true;
     scene.add( grid );
 
-    // var tgaLoader = new THREE.TGALoader();
-    // var texture = tgaLoader.load('crop/aTextures/Vegetables_OP.tga', function () {
-    // });
-    // THREE.Loader.Handlers.add(/\.tga$/i, new THREE.TGALoader());
-    var mtlLoader = new THREE.MTLLoader();
-    mtlLoader.setPath('crop/');
-    var url = 'Corn_lod2.mtl';
-    mtlLoader.load( url, function( materials ) {
-
-
-        materials.preload();
-        // materials.materials = new THREE.MeshLambertMaterial({
-        //     // wireframe:true,
-        //
-        //     map:new THREE.ImageUtils.loadTexture("../textures/tree/diffuse-min.png")
-        // });
-        var objLoader = new THREE.OBJLoader();
-        objLoader.setMaterials( materials );
-        objLoader.load( 'crop/Corn_lod2.obj', function ( object ) {
-
-            object.scale.set(0.2,0.2,0.2);
-            object.position.set(0,0,0);
-            scene.add( object );
-
-        } );
-
-    });
-
     animate();
 }
 

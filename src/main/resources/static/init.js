@@ -150,9 +150,17 @@ var controls = new function (){
     this.grass1 = false;
     this.grass2 = false;
     this.grass3 = false;
+    this.corn = false;
+    this.aubergine = false;
+    this.carrot = false;
+    this.chililg = false;
+    this.cucmber = false;
+    this.ground_patch = false;
+    this.onion = false;
+
 
     //初始树木量
-    this.TreeNumber = 100;
+    this.Number = 100;
 
     //清空画面
     this.Clean = function(){
@@ -164,22 +172,43 @@ var controls = new function (){
     //树木合成
     this.Build = function (){
         if(this.flower1===true){
-            loadFlower(1);
+            loadFlower(1,this.Number);
         }
         if(this.flower2===true){
-            loadFlower(2);
+            loadFlower(2,this.Number);
         }
         if(this.flower3===true){
-            loadFlower(3);
+            loadFlower(3,this.Number);
         }
         if(this.grass1===true){
-            loadGrass(1)
+            loadGrass(1,this.Number)
         }
         if(this.grass2===true){
-            loadGrass(2);
+            loadGrass(2,this.Number);
         }
         if(this.grass3===true){
-            loadGrass(3)
+            loadGrass(3,this.Number)
+        }
+        if(this.carrot===true){
+            loadCrop(1,this.Number)
+        }
+        if(this.chililg===true){
+            loadCrop(2,this.Number)
+        }
+        if(this.corn===true){
+            loadCrop(3,this.Number)
+        }
+        if(this.cucmber===true){
+            loadCrop(4,this.Number)
+        }
+        if(this.onion===true){
+            loadCrop(5,this.Number)
+        }
+        if(this.ground_patch===true){
+            loadCrop(6,this.Number)
+        }
+        if(this.aubergine===true){
+            loadCrop(7,this.Number)
         }
     };
 
@@ -196,6 +225,7 @@ function initGui(){
     var dataGui = new dat.GUI();
     var grassFolder = dataGui.addFolder( '草坪' );
     var flowerFolder = dataGui.addFolder( '花丛' );
+    var cropFolder = dataGui.addFolder( '农作物' );
 
     flowerFolder.add(controls,'flower1');
     flowerFolder.add(controls,'flower2');
@@ -203,8 +233,15 @@ function initGui(){
     grassFolder.add(controls,'grass1');
     grassFolder.add(controls,'grass2');
     grassFolder.add(controls,'grass3');
+    cropFolder.add(controls,'corn');
+    cropFolder.add(controls,'aubergine');
+    cropFolder.add(controls,'carrot');
+    cropFolder.add(controls,'chililg');
+    cropFolder.add(controls,'cucmber');
+    cropFolder.add(controls,'ground_patch');
+    cropFolder.add(controls,'onion');
+    dataGui.add(controls,"Number",50,5000).step(50);
     dataGui.add(controls,'Build');
-    // dataGui.add(controls,"TreeNumber",50,15000).step(50);
     //dataGui.add(controls, "Orbit");
     dataGui.add(controls,'Clean');
 }
@@ -265,13 +302,7 @@ function animate() {
     renderer.clear();
     renderer.render(scene,camera);
     stats.end();
-    // lbbs.update();
-    // scene.traverse( function ( object ) {
-    //     if ( object instanceof THREE.LOD ) {
-    //         object.update( camera );
-    //         console.log("sda");
-    //     }
-    // } );
+
     requestAnimationFrame(animate);
     if(annie!=null)
         annie.update(1000 * delta);
