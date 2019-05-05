@@ -2,8 +2,8 @@
  * Created by deii66 on 2018/1/30.
  */
 // stats 控制面板 lbbs LBB.js渲染优化 forest 场景内所有树木 leaves 与leavesupdate()相关
-var scene,renderer,camera,Trackcontrols,stats,lbbs;
-var forest = [];
+var scene,renderer,camera,Trackcontrols,stats,lbbs,mouse,raycaster,isShiftDown = false,rollOverMesh;
+var forest = [],objects = [];
 function init() {
 
     // lbbs = new LBBs();
@@ -41,6 +41,14 @@ function init() {
 
     THREE.Cache.clear();
 
+    raycaster = new THREE.Raycaster();
+    mouse = new THREE.Vector2();
+    preModel();
+
+    document.addEventListener( 'mousemove', onDocumentMouseMove, false );//鼠标移动事件
+    document.addEventListener( 'mousedown', onDocumentMouseDown, false );//鼠标点击事件
+    document.addEventListener( 'keydown', onDocumentKeyDown, false );//对shift按键的控制
+    document.addEventListener( 'keyup', onDocumentKeyUp, false );//对shift按键的控制
 
     initStats();
     initGui();
@@ -143,7 +151,7 @@ function initStats() {
 var browse = false;
 var controls = new function (){
 
-    //树木种类
+    // //树木种类
     this.flower1 = false;
     this.flower2 = false;
     this.flower3 = false;
@@ -160,57 +168,74 @@ var controls = new function (){
 
 
     //初始树木量
-    this.Number = 100;
+    //this.Number = 100;
 
     //清空画面
     this.Clean = function(){
-        for(var i=0 ; i <grasses.length;i++){
-            scene.remove(grasses[i]);
+        for(var i=1 ; i <objects.length;i++){
+            scene.remove(objects[i]);
         }
+    };
+    this.carrot = function (){
+        addModel(3);
+    };
+    this.corn = function (){
+        addModel(1);
+    };
+    this.aubergine = function (){
+        addModel(2);
+    };
+    this.chililg = function (){
+        addModel(4);
+    };
+    this.cucmber = function (){
+        addModel(5);
+    };
+    this.ground_patch = function (){
+        addModel(6);
+    };
+    this.onion = function (){
+        addModel(7);
+    };
+    this.grass1 = function (){
+        upplaneBuild(1)
+    };
+    this.grass2 = function (){
+        upplaneBuild(2)
+    };
+    this.grass3 = function (){
+        upplaneBuild(3)
+    };
+    this.flower1 = function (){
+        upplaneBuild(4,1)
+    };
+    this.flower2 = function (){
+        upplaneBuild(5,1)
+    };
+    this.flower3 = function (){
+        upplaneBuild(6,1)
     };
 
-    //树木合成
-    this.Build = function (){
-        if(this.flower1===true){
-            loadFlower(1,this.Number);
-        }
-        if(this.flower2===true){
-            loadFlower(2,this.Number);
-        }
-        if(this.flower3===true){
-            loadFlower(3,this.Number);
-        }
-        if(this.grass1===true){
-            loadGrass(1,this.Number)
-        }
-        if(this.grass2===true){
-            loadGrass(2,this.Number);
-        }
-        if(this.grass3===true){
-            loadGrass(3,this.Number)
-        }
-        if(this.carrot===true){
-            loadCrop(1,this.Number)
-        }
-        if(this.chililg===true){
-            loadCrop(2,this.Number)
-        }
-        if(this.corn===true){
-            loadCrop(3,this.Number)
-        }
-        if(this.cucmber===true){
-            loadCrop(4,this.Number)
-        }
-        if(this.onion===true){
-            loadCrop(5,this.Number)
-        }
-        if(this.ground_patch===true){
-            loadCrop(6,this.Number)
-        }
-        if(this.aubergine===true){
-            loadCrop(7,this.Number)
-        }
-    };
+    // this.Build = function (){
+    //     if(this.flower1===true){
+    //         loadFlower(1,this.Number);
+    //     }
+    //     if(this.flower2===true){
+    //         loadFlower(2,this.Number);
+    //     }
+    //     if(this.flower3===true){
+    //         loadFlower(3,this.Number);
+    //     }
+    //     if(this.grass1===true){
+    //         loadGrass(1,this.Number)
+    //     }
+    //     if(this.grass2===true){
+    //         loadGrass(2,this.Number);
+    //     }
+    //     if(this.grass3===true){
+    //         loadGrass(3,this.Number)
+    //     }
+    // };
 
     //浏览轨道
     //this.Orbit = function (){
@@ -240,8 +265,8 @@ function initGui(){
     cropFolder.add(controls,'cucmber');
     cropFolder.add(controls,'ground_patch');
     cropFolder.add(controls,'onion');
-    dataGui.add(controls,"Number",50,5000).step(50);
-    dataGui.add(controls,'Build');
+    // dataGui.add(controls,"Number",50,5000).step(50);
+    // dataGui.add(controls,'Build');
     //dataGui.add(controls, "Orbit");
     dataGui.add(controls,'Clean');
 }
@@ -306,4 +331,8 @@ function animate() {
     requestAnimationFrame(animate);
     if(annie!=null)
         annie.update(1000 * delta);
+}
+function render() {
+    renderer.clear();
+    renderer.render( scene, camera );
 }

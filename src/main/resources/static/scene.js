@@ -1,3 +1,4 @@
+var groud;
 //天空盒
 function loadSky() {
     //add skybox
@@ -37,9 +38,10 @@ function loadGround() {
         planevertices[ j + 1 ] = data[ i ] * 10;
     }
     plane.computeVertexNormals();
-    var groud =  new THREE.Mesh(plane, new THREE.MeshLambertMaterial({
+    groud =  new THREE.Mesh(plane, new THREE.MeshLambertMaterial({
         map: texture2
     }));
+    objects.push(groud);
     return groud
 }
 function generateHeight( width, height ) {
