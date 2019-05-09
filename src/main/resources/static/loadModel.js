@@ -2,7 +2,7 @@ var branchImg,leafImg;
 var leafMat;
 var material;
 var leafMesh;
-var LevelDefine = [0,4000000,5000000,6000000,7000000,8000000,9000000,10000000,15000000,25000000];
+var LevelDefine = [0,5000,10000,15000,18000,20000];
 var instanceBranchSet = [];
 var branch;
 var lod;
@@ -166,7 +166,7 @@ function newtreecircle(content){
             forest.push(temp);
             moveTree(temp);
             if(cl%10!==0)
-                planepos+=3;
+                planepos+=3* Math.floor(Math.random() * 3 + 1);
             else
                 planepos+=3*200;
             if(cl%100===0)
@@ -187,6 +187,7 @@ function draw(treecircle){
 
     //branches为一棵树所有枝干merge后的
     var branches = new THREE.Mesh(branchesgeo,material);
+    branches.frustumCulled = true;
     var randomsize = Math.random() * 10 + 3;
     var rotation = Math.random()*Math.PI*4;
     // branch.scale.set(randomy/randomsize,randomy,randomy/randomsize);

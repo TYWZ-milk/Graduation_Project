@@ -17,7 +17,7 @@ function forestupdate(){
             var z = point.applyMatrix4(cameraMatrix).z;  //z值判断树木是否在画面内 z>1则不在画面内
             var dist = forest[j][0].position.clone();
             dist.sub(camera.position);
-            dist = dist.x * dist.x + dist.y * dist.y + dist.z * dist.z;
+            dist = Math.sqrt(dist.x * dist.x + dist.y * dist.y + dist.z * dist.z);
 
             //通过距离筛选，越远的树木筛选可能性越大。
             var le = 0;
@@ -27,7 +27,7 @@ function forestupdate(){
             }
 
             forest[j][0].visible = (j % le === 0);
-            if (z<0.9998  && z> 0.9997)
+            if (z>0.9998)
                 forest[j][0].visible = false;
             //对叶子采取同样的操作
             if (forest[j][0].visible === false) {

@@ -4,7 +4,7 @@ function onDocumentMouseMove( event ) {
     mouse.set( ( event.clientX / window.innerWidth ) * 2 - 1, - ( event.clientY / window.innerHeight ) * 2 + 1 );
     raycaster.setFromCamera( mouse, camera );
     var intersects = raycaster.intersectObjects( objects );
-    if ( intersects.length > 0 ) {
+    if ( intersects.length > 0 && rollOverMesh !== undefined) {
         var intersect = intersects[ 0 ];
         rollOverMesh.position.copy( intersect.point ).add( intersect.face.normal );
         rollOverMesh.position.divideScalar( 50 ).floor().multiplyScalar( 50 ).addScalar( 25 );
@@ -40,7 +40,7 @@ function onDocumentMouseDown( event ) {
         //     }
         // }
         else {
-            if(modelClo !== null) {
+            if(modelClo !== undefined && modelClo !== null) {
                 var voxel;
                 voxel = modelClo.clone();
                 voxel.scale.set(modelSca, modelSca, modelSca);
@@ -51,6 +51,7 @@ function onDocumentMouseDown( event ) {
                 voxel = new THREE.Mesh(planeGeo, planeMat);
                 voxel.position.copy(intersect.point).add(intersect.face.normal);
                 voxel.position.divideScalar(50).floor().multiplyScalar(50);
+                voxel.position.y+=110;
             }
             scene.add(voxel);
             objects.push(voxel);

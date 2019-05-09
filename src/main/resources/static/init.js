@@ -306,14 +306,14 @@ function animate() {
 
     //每10秒更新一次界面，防止频闪现象
     var d= new Date();
-    if(d.getSeconds()%10 === 0) {
+    if(d.getSeconds()%3 === 0) {
         forestupdate();
         update = 0;
     }
     //FOI();
     //billboard
-    for(var i =0;i<grasses.length;i++){
-        grasses[i].quaternion.copy(camera.quaternion);
+    for(var i =1;i<objects.length;i++){
+        objects[i].quaternion.copy(camera.quaternion);
     }
     //leavesupdate();
 
