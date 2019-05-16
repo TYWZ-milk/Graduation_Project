@@ -12,7 +12,7 @@ function forestupdate(){
     var cameraMatrix = new THREE.Matrix4().multiplyMatrices(camera.projectionMatrix,camera.matrixWorldInverse);
 
     for(var j=0,jl=forest.length;j<jl;j++) {
-        if (j % 5 !== 0) {//至少展示几分之一的树木
+        if (j % 10 !== 0) {//至少展示几分之一的树木
             var point = new THREE.Vector3(forest[j][0].position.x, forest[j][0].position.y, forest[j][0].position.z);
             var z = point.applyMatrix4(cameraMatrix).z;  //z值判断树木是否在画面内 z>1则不在画面内
             var dist = forest[j][0].position.clone();

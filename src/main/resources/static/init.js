@@ -172,8 +172,8 @@ var controls = new function (){
 
     //清空画面
     this.Clean = function(){
-        for(var i=1 ; i <objects.length;i++){
-            scene.remove(objects[i]);
+        for(var i=1 ; i <addObj.length;i++){
+            scene.remove(addObj[i]);
         }
     };
     this.carrot = function (){
@@ -214,6 +214,9 @@ var controls = new function (){
     };
     this.flower3 = function (){
         upplaneBuild(6,1)
+    };
+    this.House = function (){
+        HouseScene();
     };
 
     // this.Build = function (){
@@ -269,6 +272,7 @@ function initGui(){
     // dataGui.add(controls,'Build');
     //dataGui.add(controls, "Orbit");
     dataGui.add(controls,'Clean');
+    dataGui.add(controls,'House');
 }
 
 //初始化场景

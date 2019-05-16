@@ -1,4 +1,5 @@
 var modelSca,modelClo;
+var addObj = [];
 function onDocumentMouseMove( event ) {
     event.preventDefault();//取消事件的默认动作
     mouse.set( ( event.clientX / window.innerWidth ) * 2 - 1, - ( event.clientY / window.innerHeight ) * 2 + 1 );
@@ -55,6 +56,7 @@ function onDocumentMouseDown( event ) {
             }
             scene.add(voxel);
             objects.push(voxel);
+            addObj.push(voxel);
         }
         render();
     }
