@@ -24,8 +24,6 @@ function HouseScene() {
     var grassgroud = new THREE.Mesh(grassplane, new THREE.MeshLambertMaterial({
         map: texture2
     }));
-    grassgroud.position.set(0,115,0);
-    scene.add(grassgroud);
 
 
     var grassImg = new THREE.ImageUtils.loadTexture("../textures/tree/flower1.png");
@@ -35,41 +33,8 @@ function HouseScene() {
     });
     var geo = new THREE.PlaneGeometry(200, 200 );
     var grass = new THREE.Mesh(geo,grassMat);
-    // var posx = -1100;
-    // var posz = 700;
-    // for(var i =0;i<67;i++){
-    //     var grassMesh = grass.clone();
-    //     //x:-1100~1700 z:700~-1200
-    //     grassMesh.position.set(posx,210,posz);
-    //     scene.add(grassMesh);
-    //     objects.push(grassMesh);
-    //     if(posx===-1100 && posz > -1300)
-    //         posz-=100;
-    //     else if(posz <= -1300 && posx <1700)
-    //         posx+=100;
-    //     else if(posx >=1700)
-    //         posz+=100;
-    // }
-    // posx = -1400;
-    // posz = 1000;
-    // for(var i =0;i<43;i++){
-    //
-    //     //x:-1500~2000 z:1000~-1500
-    //     var tree = forest[0][0].clone();
-    //     var leave = forest[0][1].clone();
-    //     tree.position.set(posx,110,posz);
-    //     leave.position.set(posx,110,posz);
-    //     scene.add(tree);
-    //     scene.add(leave);
-    //     if(posx===-1400 && posz >-1600)
-    //         posz-=200;
-    //     else if(posz <= -1600 && posx <2000)
-    //         posx+=200;
-    //     else if(posx >=2000)
-    //         posz+=200;
-    // }
 
-    neighborhood(grassgroud.clone(),tree,leave,grass)
+    neighborhood(grassgroud.clone(),grass)
 }
 
 function neighborhood(grassgroud,grassMesh) {
@@ -96,7 +61,7 @@ function neighborhood(grassgroud,grassMesh) {
             }
         } );
     });
-    var posx = -9750;
+    var posx = -9600;
     var posz = -10000;
     for(var i = 0; i <24;i++){
         var grass = grassgroud.clone();
@@ -104,18 +69,75 @@ function neighborhood(grassgroud,grassMesh) {
         scene.add(grass);
         posx+=4000;
         if(posx > 14000) {
-            posx = -9750;
+            posx = -9600;
             posz += 6000;
         }
     }
-    var tree = forest[0][0].clone();
-    var leave = forest[0][1].clone();
-    tree.position.set(1000,1000,100);
-    scene.add(tree);
-    leave.position.set(1000,1000,100);
-    scene.add(leave);
-    grassMesh.position.set(1000,1000,100);
-    scene.add(grassMesh);
+
+    var left = -11100;
+    var right = -8200;
+    var top = -11300;
+    posx = -11100;
+    posz = -9200;
+    for(var j = 0;j<24;j++) {
+        for (var i = 0; i < 71; i++) {
+            var flowers = grassMesh.clone();
+            flowers.position.set(posx, 210, posz);
+            scene.add(flowers);
+            objects.push(flowers);
+            if (posx === left && posz > top)
+                posz -= 100;
+            else if (posz <= top && posx < right)
+                posx += 100;
+            else if (posx >= right)
+                posz += 100;
+        }
+        posx+=1100;
+        left+=4000;
+        right+=4000;
+        if(posx > 10000) {
+            posx = -11100;
+            left = -11100;
+            right = -8200;
+            posz += 6000;
+            top+=6000;
+        }
+    }
+
+
+    left = -11200;
+    right = -8100;
+    top = -11400;
+    posx = -11200;
+    posz = -9300;
+    for(var j = 0;j<24;j++) {
+        for (var i = 0; i < 21; i++) {
+            var tree = forest[0][0].clone();
+            var leave = forest[0][1].clone();
+            var rotation = Math.random()*Math.PI*4;
+            tree.position.set(posx, 110, posz);
+            leave.position.set(posx, 110, posz);
+            leave.rotation.set(0,rotation,0);
+            scene.add(tree);
+            scene.add(leave);
+            if (posx === left && posz > top)
+                posz -= 400;
+            else if (posz <= top && posx < right)
+                posx += 400;
+            else if (posx >= right)
+                posz += 400;
+        }
+        posx+=800;
+        left+=4000;
+        right+=4000;
+        if(posx > 10000) {
+            posx = -11200;
+            left = -11200;
+            right = -8100;
+            posz += 6000;
+            top+=6000;
+        }
+    }
 }
 
 function RemoveAll() {
