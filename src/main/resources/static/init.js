@@ -308,7 +308,7 @@ function orbit(){
 var clock = new THREE.Clock();
 function animate() {
 
-    //每10秒更新一次界面，防止频闪现象
+    //每3秒更新一次界面，防止频闪现象
     var d= new Date();
     if(d.getSeconds()%3 === 0) {
         forestupdate();
