@@ -2,8 +2,9 @@
  * Created by deii66 on 2018/1/30.
  */
 // stats 控制面板 lbbs LBB.js渲染优化 forest 场景内所有树木 leaves 与leavesupdate()相关
-var scene,renderer,camera,Trackcontrols,stats,lbbs,mouse,raycaster,isShiftDown = false,rollOverMesh;
+var scene,renderer,camera,Trackcontrols,stats,lbbs,mouse,raycaster,isShiftDown = false,rollOverMesh,rotcontrols;
 var forest = [],objects = [];
+var changeDirection = false;
 function init() {
 
     // lbbs = new LBBs();
@@ -38,6 +39,11 @@ function init() {
     Trackcontrols.movementSpeed = 500;
     Trackcontrols.lookSpeed = 0.1;
     Trackcontrols.lookVertical = true;
+
+    rotcontrols = new THREE.TransformControls(camera,renderer.domElement);
+    rotcontrols.addEventListener( 'change', render );
+    rotcontrols.setMode("rotate");
+    scene.add(rotcontrols);
 
     THREE.Cache.clear();
 
@@ -218,7 +224,9 @@ var controls = new function (){
     this.House = function (){
         HouseScene();
     };
-
+    this.Direction = function (){
+        changeDirection = true;
+    };
     // this.Build = function (){
     //     if(this.flower1===true){
     //         loadFlower(1,this.Number);
@@ -251,9 +259,9 @@ var controls = new function (){
 //控制界面
 function initGui(){
     var dataGui = new dat.GUI();
-    var grassFolder = dataGui.addFolder( '草坪' );
-    var flowerFolder = dataGui.addFolder( '花丛' );
-    var cropFolder = dataGui.addFolder( '农作物' );
+    var grassFolder = dataGui.addFolder( 'Grass' );
+    var flowerFolder = dataGui.addFolder( 'Flower' );
+    var cropFolder = dataGui.addFolder( 'Crop' );
 
     flowerFolder.add(controls,'flower1');
     flowerFolder.add(controls,'flower2');
@@ -271,6 +279,7 @@ function initGui(){
     // dataGui.add(controls,"Number",50,5000).step(50);
     // dataGui.add(controls,'Build');
     //dataGui.add(controls, "Orbit");
+    dataGui.add(controls,'Direction');
     dataGui.add(controls,'Clean');
     dataGui.add(controls,'House');
 }

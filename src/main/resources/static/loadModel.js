@@ -12,7 +12,7 @@ function initObject(){
     branchImg = new THREE.ImageUtils.loadTexture("../textures/tree/diffuse-min.png");
     material = new THREE.MeshLambertMaterial({
         // wireframe:true,
-
+        side: THREE.DoubleSide,
         map:branchImg
     });
 
@@ -166,11 +166,11 @@ function newtreecircle(content){
             forest.push(temp);
             moveTree(temp);
             if(cl%10!==0)
-                planepos+=3* Math.floor(Math.random() * 3 + 1);
+                planepos+=3* Math.floor(Math.random() * 9 + 6);
             else
                 planepos+=3*200;
             if(cl%100===0)
-                planepos+=600 * Math.floor(Math.random() * 12 + 1);
+                planepos+=300 * Math.floor(Math.random() * 12 + 1);
         }
         tree = [];
         forestupdate();

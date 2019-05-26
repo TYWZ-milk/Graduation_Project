@@ -12,7 +12,7 @@ function onDocumentMouseMove( event ) {
     }
     render();
 }
-
+var selected;
 function onDocumentMouseDown( event ) {
     event.preventDefault();
     mouse.set( ( event.clientX / window.innerWidth ) * 2 - 1, - ( event.clientY / window.innerHeight ) * 2 + 1 );
@@ -28,18 +28,19 @@ function onDocumentMouseDown( event ) {
             }
             // create cube
         }
-        // else if(changeDirection) {
-        //     if ( intersect.object != plane ) {
-        //         for (var i = objects.length - 1; i >= 0; i--)
-        //             if (intersects[0].object == objects[i]) {
-        //                 selected = objects[i];
-        //                 rotcontrols.attach(selected);
-        //             }
-        //     }
-        //     else{
-        //         rotcontrols.detach(selected);
-        //     }
-        // }
+        else if(changeDirection) {
+            if ( intersect.object !== groud ) {
+                for (var i = objects.length - 1; i >= 0; i--)
+                    if (intersects[0].object === objects[i]) {
+
+                        selected = objects[i];
+                        rotcontrols.attach(selected);
+                    }
+            }
+            else{
+                rotcontrols.detach(selected);
+            }
+        }
         else {
             if(modelClo !== undefined && modelClo !== null) {
                 var voxel;
@@ -73,7 +74,7 @@ function onDocumentKeyUp( event ) {
 }
 
 function addModel(model){
-
+    changeDirection = false;
     if(model === 3) {
         modelFollow(3);
         modelClo = carrot.clone();
@@ -233,6 +234,7 @@ function preModel() {
 }
 var planeGeo,planeMat;
 function upplaneBuild(upplane,type){
+    changeDirection = false;
     modelClo = null;
     if(type === 1) {
         upplaneFollow(1);

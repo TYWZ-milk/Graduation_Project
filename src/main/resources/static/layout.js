@@ -11,11 +11,11 @@ function HouseScene() {
     groud = new THREE.Mesh(newplane, new THREE.MeshLambertMaterial({
         map: texture2
     }));
-    groud.position.set(0,110,0);
+    groud.position.set(0,0,0);
     scene.add(groud);
     objects.push(groud);
 
-    texture2 = THREE.ImageUtils.loadTexture("../textures/terrain/grasslight-thin.jpg");
+    texture2 = THREE.ImageUtils.loadTexture("../textures/terrain/grass.png");
     texture2.wrapS = THREE.RepeatWrapping;
     texture2.wrapT = THREE.RepeatWrapping;
     texture2.repeat.set(100*50/100,100*50/100);
@@ -51,7 +51,7 @@ function neighborhood(grassgroud,grassMesh) {
             var posz = -10000;
             for(var i = 0; i <24;i++){
                 var house = object.clone();
-                house.position.set(posx,150,posz);
+                house.position.set(posx,10,posz);
                 scene.add(house);
                 posx+=4000;
                 if(posx === 14000) {
@@ -65,7 +65,7 @@ function neighborhood(grassgroud,grassMesh) {
     var posz = -10000;
     for(var i = 0; i <24;i++){
         var grass = grassgroud.clone();
-        grass.position.set(posx,150,posz);
+        grass.position.set(posx,5,posz);
         scene.add(grass);
         posx+=4000;
         if(posx > 14000) {
@@ -82,7 +82,7 @@ function neighborhood(grassgroud,grassMesh) {
     for(var j = 0;j<24;j++) {
         for (var i = 0; i < 71; i++) {
             var flowers = grassMesh.clone();
-            flowers.position.set(posx, 210, posz);
+            flowers.position.set(posx, 110, posz);
             scene.add(flowers);
             objects.push(flowers);
             if (posx === left && posz > top)
@@ -115,8 +115,8 @@ function neighborhood(grassgroud,grassMesh) {
             var tree = forest[0][0].clone();
             var leave = forest[0][1].clone();
             var rotation = Math.random()*Math.PI*4;
-            tree.position.set(posx, 110, posz);
-            leave.position.set(posx, 110, posz);
+            tree.position.set(posx, 0, posz);
+            leave.position.set(posx, 0, posz);
             leave.rotation.set(0,rotation,0);
             scene.add(tree);
             scene.add(leave);
