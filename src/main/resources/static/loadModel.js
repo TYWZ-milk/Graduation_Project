@@ -187,7 +187,7 @@ function draw(treecircle){
 
     //branches为一棵树所有枝干merge后的
     var branches = new THREE.Mesh(branchesgeo,material);
-    branches.frustumCulled = true;
+    //branches.frustumCulled = true;
     var randomsize = Math.random() * 10 + 3;
     var rotation = Math.random()*Math.PI*4;
     // branch.scale.set(randomy/randomsize,randomy,randomy/randomsize);

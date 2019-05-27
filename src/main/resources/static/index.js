@@ -1,5 +1,5 @@
 var camera, scene, renderer, Trackcontrols;
-var material;
+var material2;
 var tree1 = [];
 var tree = [];
 var pos = 0;
@@ -25,8 +25,9 @@ function init() {
     light.shadow.camera.right = 120;
     scene.add( light );
 
-    branchImg = new THREE.ImageUtils.loadTexture("../textures/tree/diffuse-min.png");
-    material = new THREE.MeshNormalMaterial();
+    material2 = new THREE.MeshBasicMaterial({
+        color: 0xA0522D
+    });
 
     var canvas = document.getElementById("canvas");
     renderer = new THREE.WebGLRenderer({
@@ -192,7 +193,7 @@ function showBaseTree(fileStr) {
     branchesgeo = new THREE.Geometry();
     compact(tree1);
     drawTree(tree1);
-    var branches = new THREE.Mesh(branchesgeo,material);
+    var branches = new THREE.Mesh(branchesgeo,material2);
     moveTree(branches,pos,pos);
     pos++;
 }
@@ -283,7 +284,7 @@ function drawBranch(trunk) {
         }
     }
 
-    var branch = new THREE.Mesh(geo,material);
+    var branch = new THREE.Mesh(geo,material2);
     branch.updateMatrix();
     branchesgeo.merge(branch.geometry,branch.matrix);
 
@@ -293,13 +294,13 @@ function drawBranch(trunk) {
     // _32array = translate(vertices);
     // geo.addAttribute( 'position', new THREE.Float32BufferAttribute( _32array, 3 ) );
     // geo.computeVertexNormals();
-    // branch = new THREE.Mesh(geo,material);
+    // branch = new THREE.Mesh(geo,material2);
     // tree.push(branch);
 }
 
 //点集转换为32Array
 function translate(vertices){
-    var precision = 3;
+    var precision = 5;
     var _32array = [];
     for(var i=0;i<vertices.length;i++){
         if((i+1) %5 === 0 && i + 1 !== vertices.length-1){

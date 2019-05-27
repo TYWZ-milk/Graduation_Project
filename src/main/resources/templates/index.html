@@ -2,7 +2,7 @@
 <html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" />
-    <title>Document</title>
+    <title>大规模森林生成平台</title>
     <script th:src="@{/lib/jquery-1.11.3.min.js}"></script>
     <link th:href="@{/demo.css}" rel="stylesheet" type="text/css">
     <link th:href="@{/button-bootstrap.css}" rel="stylesheet" type="text/css">
@@ -35,7 +35,7 @@
                 </div>
             </div>
             <div class="row">
-                <input type="text" placeholder="请输入基样例树木个数" id="num"
+                <input type="text" placeholder="请输入森林规模（1~10）" id="num"
                        onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
                        onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"/>
                 <button type="submit" name="btn" value="计算" id="number" onclick="blending()" class="button button-border button-rounded button-tiny" style="margin-top:10px">计算</button>

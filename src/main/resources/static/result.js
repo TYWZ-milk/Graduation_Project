@@ -5,7 +5,9 @@ function result() {
     THREE.Cache.clear();
     camera2 = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 5000 );
     camera2.position.set( 100, 200, 300 );
-    material = new THREE.MeshNormalMaterial();
+    material = new THREE.MeshLambertMaterial({
+        color:0xA0522D
+    });
 
     scene2 = new THREE.Scene();
     scene2.background = new THREE.Color( 0xa0a0a0 );

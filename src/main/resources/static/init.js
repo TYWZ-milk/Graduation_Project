@@ -56,7 +56,7 @@ function init() {
     document.addEventListener( 'keydown', onDocumentKeyDown, false );//对shift按键的控制
     document.addEventListener( 'keyup', onDocumentKeyUp, false );//对shift按键的控制
 
-    initStats();
+    //initStats();
     initGui();
     initScene();
     initObject();
@@ -336,14 +336,14 @@ function animate() {
     // Trackcontrols.update(delta);
 
     //实时渲染
-    stats.begin();
+    //stats.begin();
     renderer.clear();
     renderer.render(scene,camera);
-    stats.end();
+    //stats.end();
 
     requestAnimationFrame(animate);
-    if(annie!=null)
-        annie.update(1000 * delta);
+    // if(annie!=null)
+    //     annie.update(1000 * delta);
 }
 function render() {
     renderer.clear();
