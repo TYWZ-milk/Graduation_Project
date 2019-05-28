@@ -23,8 +23,8 @@ function loadSky() {
 
 //地面
 var planevertices;
-function loadGround() {
-    //add ground
+    function loadGround() {
+        //add ground
     var texture2 = THREE.ImageUtils.loadTexture("../textures/terrain/farmland_dry.png");
     texture2.wrapS = THREE.RepeatWrapping;
     texture2.wrapT = THREE.RepeatWrapping;

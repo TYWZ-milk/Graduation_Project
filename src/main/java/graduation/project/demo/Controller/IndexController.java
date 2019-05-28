@@ -103,23 +103,24 @@ public class IndexController {
             blendtree = new ArrayList<>();
             for (int total = 0; total < forestSize; total++) {
                 List<List<List<Node>>>  temp = new ArrayList<>(blendtree);
-                if(total==forestSize/2) {
-                    temp = new ArrayList<>(midTree);
-                    Collections.reverse(documents);
-                }
+//                if(total==forestSize/2) {
+//                    temp = new ArrayList<>(midTree);
+//                    Collections.reverse(documents);
+//                }
                 blendtree = new ArrayList<>();
                 if (total == 0) {
                     blending(ptree1, ptree2);
-                    midTree = new ArrayList<>(blendtree);
+                    //midTree = new ArrayList<>(blendtree);
                 }
-                else if (total < forestSize / 2)
-                    blending(temp, ptree1);
+//                else if (total < forestSize / 2)
+//                    blending(temp, ptree1);
                 else
                     blending(temp, ptree2);
                 compact();
                 System.out.format("第%d棵树木生成完成\n", total + 1);
                 save(time);
             }
+            Collections.reverse(documents);
         }
         session.setAttribute("timeid",time);
         toMongo();

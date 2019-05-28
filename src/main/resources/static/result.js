@@ -113,6 +113,7 @@ function newtreecircle(content){
                 radius = "";
             }
         }
+        treecircle.push(branchcircle);
         branchesgeo = new THREE.Geometry();
         drawTree2(treecircle);
         // var branches = new THREE.Mesh(branchesgeo,material);
