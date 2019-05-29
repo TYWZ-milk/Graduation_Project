@@ -41,21 +41,22 @@ function neighborhood(grassgroud,grassMesh) {
 
     var mtlLoader = new THREE.MTLLoader();
     mtlLoader.setPath('conference/');
-    var url = 'conference.mtl';
+    var url = 'huisuo.mtl';
     mtlLoader.load( url, function( materials ) {
         materials.preload();
         var objLoader = new THREE.OBJLoader();
         objLoader.setMaterials( materials );
-        objLoader.load( 'conference/conference.obj', function ( object ) {
-            var posx = -10000;
-            var posz = -10000;
+        objLoader.load( 'conference/huisuo.obj', function ( object ) {
+            object.scale.set(0.05,0.05,0.05);
+            var posx = -11200;
+            var posz = -9000;
             for(var i = 0; i <24;i++){
                 var house = object.clone();
                 house.position.set(posx,10,posz);
                 scene.add(house);
                 posx+=4000;
-                if(posx === 14000) {
-                    posx = -10000;
+                if(posx >= 14000) {
+                    posx = -11200;
                     posz += 6000;
                 }
             }

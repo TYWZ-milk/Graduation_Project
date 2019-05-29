@@ -331,7 +331,7 @@ function animate() {
     //leavesupdate();
 
     //浏览轨道控制
-    // var delta = clock.getDelta();
+    var delta = clock.getDelta();
     // orbit();
     // Trackcontrols.update(delta);
 
@@ -342,8 +342,8 @@ function animate() {
     //stats.end();
 
     requestAnimationFrame(animate);
-    // if(annie!=null)
-    //     annie.update(1000 * delta);
+    if(annie!=null)
+        annie.update(1000 * delta);
 }
 function render() {
     renderer.clear();

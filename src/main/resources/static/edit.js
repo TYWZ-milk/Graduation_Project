@@ -245,7 +245,8 @@ function upplaneBuild(upplane,type){
         planeGeo = new THREE.PlaneGeometry(  600, 100 );
     }
     // 实体对象，就是鼠标点击确定之后的实体对象，并且实体对象的图片引入
-
+    var anima_flower = new THREE.ImageUtils.loadTexture("../textures/tree/anima_flower_1.png");
+    annie = new TextureAnimator( anima_flower, 1, 10, 10, 300 ); // texture, #horiz, #vert, #total, duration.
     if(upplane === 1)
         planeMat = new THREE.MeshLambertMaterial( {  map: new THREE.ImageUtils.loadTexture("../textures/tree/grass1.png"),transparent:true} );
     else if(upplane === 2)
@@ -255,7 +256,7 @@ function upplaneBuild(upplane,type){
     else if(upplane === 4)
         planeMat = new THREE.MeshLambertMaterial( {  map: new THREE.ImageUtils.loadTexture("../textures/tree/flower1.png"),transparent:true} );
     else if(upplane === 5)
-        planeMat = new THREE.MeshLambertMaterial( {  map: new THREE.ImageUtils.loadTexture("../textures/tree/flower2.png"),transparent:true} );
+        planeMat = new THREE.MeshLambertMaterial( {  map: anima_flower,transparent:true} );
     else if(upplane === 6)
         planeMat = new THREE.MeshLambertMaterial( {  map: new THREE.ImageUtils.loadTexture("../textures/tree/flower3.png"),transparent:true} );
 
